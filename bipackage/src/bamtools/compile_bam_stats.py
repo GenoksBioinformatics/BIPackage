@@ -3,6 +3,8 @@ import os
 
 import pandas as pd
 
+from bipackage.util.utilities import timer
+
 
 def parse_coverage_report(file_path):
     """Parse a .coverage.report file and return a dictionary of its contents."""
@@ -33,7 +35,7 @@ def find_coverage_report_files(root_dir):
     return report_files
 
 
-def compile_reports_to_csv(root_dir, output_csv):
+def compile_reports_to_csv(root_dir: str, output_csv: str):
     """Compile all .coverage.report files into a single CSV."""
     report_files = find_coverage_report_files(root_dir)
     data_list = [parse_coverage_report(file) for file in report_files]
@@ -41,8 +43,13 @@ def compile_reports_to_csv(root_dir, output_csv):
     df.to_csv(output_csv, index=False)
     print(f"Compiled {len(report_files)} files into {output_csv}")
 
+@timer
+def compile_bam_stats(root_directory: str, output_csv: str) -> None:
+    """The main command for the CLI entry point."""
+    compile_reports_to_csv(root_dir=root_directory, output_csv=output_csv)
 
-def main():
+
+""" def main():
     parser = argparse.ArgumentParser(description="Compile coverage report files into a CSV.")
     parser.add_argument(
         "root_directory",
@@ -51,8 +58,8 @@ def main():
     )
     parser.add_argument("output_csv", type=str, help="Path to output CSV file")
     args = parser.parse_args()
-    compile_reports_to_csv(args.root_directory, args.output_csv)
+    compile_reports_to_csv(args.root_directory, args.output_csv) """
 
 
 if __name__ == "__main__":
-    main()
+    pass

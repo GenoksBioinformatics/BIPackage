@@ -4,6 +4,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import pandas as pd
 
+from bipackage.util.utilities import timer
+
 
 # Keep the function outside the class
 def run_bedtools_command(args):
@@ -71,20 +73,23 @@ class CountsFromBam:
         count_mat.to_csv(os.path.join(self.input_dir, "Counts_matrix.txt"), sep="\t", index=False)
 
 
-# Set parameters
-input_dir = "/home/genwork2/Mert/bwa_dedup/braf-kras-nras"
-exome_bait = "/home/genwork2/Mert/02.BEDS/variousbeds/sorted_braf-kras-nras.bed"
-num_threads = 40
 
-# Start processing
-start = time.time()
 
-get_counts = CountsFromBam(input_dir, exome_bait, num_threads)
-get_counts.process_bams()
+def _test_bam_counts():
+    # Set parameters
+    input_dir = "/home/genwork2/Mert/bwa_dedup/braf-kras-nras"
+    exome_bait = "/home/genwork2/Mert/02.BEDS/variousbeds/sorted_braf-kras-nras.bed"
+    num_threads = 40
+    bam_counts()
 
-end = time.time()
-elapsed = end - start
-print(f"Elapsed time is {elapsed}")
+@timer
+def bam_counts(input_dir:str,exome_bait:str,num_threads:int):
+    """The main command for the CLI entry point."""
+    counts = CountsFromBam(input_dir, exome_bait, num_threads)
+    counts.process_bams()
+    # Create count matrix
+    counts.create_count_matrix()
+    return
 
-# Create count matrix
-get_counts.create_count_matrix()
+if __name__ == "__main__":
+    _test_bam_counts()
