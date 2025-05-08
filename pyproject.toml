@@ -12,7 +12,10 @@ dependencies = [
 ]
 
 [tool.poetry.scripts]
-fx = "framex.cli._entry:main"
+bip = "bipackage.cli._entry:main"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.11.8"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
