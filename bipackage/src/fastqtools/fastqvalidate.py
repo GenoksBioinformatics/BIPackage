@@ -1,7 +1,7 @@
 import os
 
-def check_files(directory):
 
+def check_files(directory):
     for filename in os.listdir(directory):
         if filename.endswith("fastq.gz") or filename.endswith("fq.gz"):
             if os.path.isfile(os.path.join(directory, filename)):
@@ -13,7 +13,6 @@ def check_files(directory):
         else:
             pass
 
+
 directory_path = "/home/genwork2/Mert/fastqfix/DS2/2773"
 check_files(directory_path)
-
-

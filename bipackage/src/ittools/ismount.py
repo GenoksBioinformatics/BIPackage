@@ -2,16 +2,18 @@ import os
 import time
 import json
 
+
 def is_mounted(folder_path):
     return os.path.ismount(folder_path)
 
 
 def mount_server(username, server_address, mount_folder, password, version=None):
-
     if version:
         mount_command = f"sudo mount -t cifs //{server_address} {mount_folder} -o username={username},password={password},vers={version}"
     else:
-        mount_command = f"sudo mount -t cifs //{server_address} {mount_folder} -o username={username},password={password}"
+        mount_command = (
+            f"sudo mount -t cifs //{server_address} {mount_folder} -o username={username},password={password}"
+        )
 
     os.system(mount_command)
 
@@ -31,7 +33,7 @@ def check_reconnect(base_mnt, config_file):
             password = config_file.get(folder_path).get("password")
 
             mount_server(username, server_address, folder_path, password, version)
-            
+
             time.sleep(5)
 
             if is_mounted(folder_path):
@@ -46,4 +48,3 @@ config_file = ""
 base = ""
 
 check_reconnect(base, config_file)
-

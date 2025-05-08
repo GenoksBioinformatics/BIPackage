@@ -79,6 +79,9 @@ ignore = [
 [tool.ruff.lint.pycodestyle]
 max-doc-length = 99
 
+[tool.ruff]
+line-length = 120
+
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
 

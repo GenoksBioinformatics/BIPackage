@@ -3,6 +3,7 @@ import pandas as pd
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+
 # Keep the function outside the class
 def run_bedtools_command(args):
     bam_file, exome_bait, input_dir = args
@@ -10,6 +11,7 @@ def run_bedtools_command(args):
     output_name = sample_name + "_counts.tsv"
     command = f"bedtools multicov -bed {exome_bait} -bams {bam_file} -q 20 -p > {os.path.join(input_dir, output_name)}"
     os.system(command)
+
 
 class CountsFromBam:
     def __init__(self, input_dir, exome_bait, num_threads):
@@ -40,7 +42,9 @@ class CountsFromBam:
                     print(f"Error occurred: {e}")
 
     def create_count_matrix(self):
-        counts_paths = [os.path.join(self.input_dir, item) for item in os.listdir(self.input_dir) if item.endswith("_counts.tsv")]
+        counts_paths = [
+            os.path.join(self.input_dir, item) for item in os.listdir(self.input_dir) if item.endswith("_counts.tsv")
+        ]
         file_names = [item for item in os.listdir(self.input_dir) if item.endswith("_counts.tsv")]
 
         # Check if count files exist
@@ -52,7 +56,7 @@ class CountsFromBam:
 
         # Read the first file and initialize the DataFrame
         count_mat = pd.read_csv(counts_paths[0], sep="\t", header=None)
-        
+
         count_mat.columns = ["chromosome", "start", "end", counts_names[0]]
 
         # Append data from the remaining files

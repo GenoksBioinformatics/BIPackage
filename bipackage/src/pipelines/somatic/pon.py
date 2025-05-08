@@ -5,31 +5,33 @@ import json
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 from typing import List, Optional
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
 
 class PanelOfNormals:
     def __init__(
-            self,
-            output_folder: str,
-            ref_fasta: str,
-            ref_dict: str,
-            interval_list: str,
-            pon_id: str,
-            normal_bams: List[str],
-            gc_correction: bool = None,
-            bin_length: int = None,
-            blacklist_intervals: str = None,
-            padding: int = None,
-            do_impute_zeros: bool = None,
-            number_of_eigensamples: int = None,
-            feature_query_lookahead: int = None,
-            minimum_interval_median_percentile: float = None,
-            maximum_zeros_in_sample_percentage: float = None,
-            maximum_zeros_in_interval_percentage: float = None,
-            extreme_sample_median_percentile: float = None,
-            extreme_outlier_truncation_percentile: float = None,
-            maximum_chunk_size: int = None):
-
+        self,
+        output_folder: str,
+        ref_fasta: str,
+        ref_dict: str,
+        interval_list: str,
+        pon_id: str,
+        normal_bams: List[str],
+        gc_correction: bool = None,
+        bin_length: int = None,
+        blacklist_intervals: str = None,
+        padding: int = None,
+        do_impute_zeros: bool = None,
+        number_of_eigensamples: int = None,
+        feature_query_lookahead: int = None,
+        minimum_interval_median_percentile: float = None,
+        maximum_zeros_in_sample_percentage: float = None,
+        maximum_zeros_in_interval_percentage: float = None,
+        extreme_sample_median_percentile: float = None,
+        extreme_outlier_truncation_percentile: float = None,
+        maximum_chunk_size: int = None,
+    ):
         self.output_folder = output_folder
         self.ref_fasta = ref_fasta
         self.ref_dict = ref_dict
@@ -49,7 +51,7 @@ class PanelOfNormals:
         self.extreme_sample_median_percentile = extreme_sample_median_percentile
         self.extreme_outlier_truncation_percentile = extreme_outlier_truncation_percentile
         self.maximum_chunk_size = maximum_chunk_size
-        
+
         self.intervals_name = None
         self.preprocessed_intervals = None
         self.annotated_intervals = None
@@ -57,9 +59,8 @@ class PanelOfNormals:
         self.count_commands = []
 
     def preprocess_intervals(self):
-
         logging.info("Processing interval list")
-        
+
         self.intervals_name = os.path.basename(self.interval_list).split("interval_list")[0]
         preprocessed_name = self.intervals_name + "preprocessed.interval_list"
         self.preprocessed_intervals = os.path.join(self.output_folder, preprocessed_name)
@@ -78,28 +79,27 @@ class PanelOfNormals:
         if self.bin_length:
             command += f" --bin-length {self.bin_length}"
 
-
         try:
             result = subprocess.run(command, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-            stderr_output = result.stderr.decode('utf-8').strip()
-            stdout_output = result.stdout.decode('utf-8').strip()
+            stderr_output = result.stderr.decode("utf-8").strip()
+            stdout_output = result.stdout.decode("utf-8").strip()
 
             if result.returncode != 0:
-                logging.error(f"PreprocessIntervals - An error occurred while processing the interval list: {stderr_output}")
+                logging.error(
+                    f"PreprocessIntervals - An error occurred while processing the interval list: {stderr_output}"
+                )
             else:
                 logging.info(f"PreprocessIntervals - Interval list have been processed successfully: {stdout_output}")
-                   
+
         except Exception as e:
             logging.error(f"somaticpip.py - An internal error occurred while processing the interval list: {e}")
 
-
     def annotate_intervals(self):
-
         logging.info("Annotating invervals")
-        
+
         annotated_name = self.intervals_name + "preprocessed.annotated.tsv"
         self.annotated_intervals = os.path.join(self.output_folder, annotated_name)
-        
+
         command = (
             f"gatk AnnotateIntervals -L {self.preprocessed_intervals} "
             f"--reference {self.ref_fasta} "
@@ -110,35 +110,31 @@ class PanelOfNormals:
         if self.feature_query_lookahead:
             command += f" --feature-query-lookahead {self.feature_query_lookahead}"
 
-
         try:
             result = subprocess.run(command, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-            stderr_output = result.stderr.decode('utf-8').strip()
-            stdout_output = result.stdout.decode('utf-8').strip()
+            stderr_output = result.stderr.decode("utf-8").strip()
+            stdout_output = result.stdout.decode("utf-8").strip()
 
             if result.returncode != 0:
                 logging.error(f"AnnotateIntervals - An error occurred while annotating the intervals: {stderr_output}")
             else:
                 logging.info(f"AnnotateIntervals - Intervals have been annotated successfully: {stdout_output}")
-                   
+
         except Exception as e:
             logging.error(f"somaticpip.py - An internal error occurred while annotating the intervals: {e}")
 
-    
     def collect_counts(self):
-
         logging.info("Collecting Read Counts")
 
         self.counts_folder = os.path.join(self.output_folder, "read_counts")
 
         os.makedirs(self.counts_folder, exist_ok=True)
-        
+
         for bam in self.normal_bams:
             bam_name = os.path.basename(bam)
             sample_name = os.path.splitext(bam_name)[0]
             counts_name = sample_name + ".counts.hdf5"
             counts_path = os.path.join(self.counts_folder, counts_name)
-
 
             count_command = (
                 f"gatk CollectReadCounts -L {self.preprocessed_intervals} "
@@ -153,24 +149,21 @@ class PanelOfNormals:
             futures = [executor.submit(self.run_collectreadcounts_commands, command) for command in self.count_commands]
             for future in futures:
                 try:
-                    future.result() 
+                    future.result()
                 except Exception as e:
                     logging.error(f"Error occurred during running CollectReadCounts commands: {e}")
 
     def run_collectreadcounts_commands(self, command):
-        
         result = subprocess.run(command, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-        stderr_output = result.stderr.decode('utf-8').strip()
-        stdout_output = result.stdout.decode('utf-8').strip()
+        stderr_output = result.stderr.decode("utf-8").strip()
+        stdout_output = result.stdout.decode("utf-8").strip()
 
         if result.returncode != 0:
             logging.error(f"CollectReadCounts - An error occurred while running command: {stderr_output}")
         else:
             logging.info(f"CollectReadCounts - Command completed successfully: {stdout_output}")
 
-    
     def create_pon(self):
-
         logging.info("Creating panel of normals")
 
         count_files = os.listdir(self.counts_folder)
@@ -186,10 +179,7 @@ class PanelOfNormals:
         for item in count_paths:
             line += "--input " + item + " "
 
-        command = (
-            f"gatk CreateReadCountPanelOfNormals {line.strip()} "
-            f"--output {self.pon_path}"
-        )
+        command = f"gatk CreateReadCountPanelOfNormals {line.strip()} --output {self.pon_path}"
 
         if self.minimum_interval_median_percentile:
             command += f" --minimum-interval-median-percentile {self.minimum_interval_median_percentile}"
@@ -200,32 +190,34 @@ class PanelOfNormals:
         if self.do_impute_zeros:
             command += f" --do-impute-zeros {self.do_impute_zeros}"
         if self.extreme_outlier_truncation_percentile:
-            command +=  f" --extreme-outlier-truncation-percentile {self.extreme_outlier_truncation_percentile}"
+            command += f" --extreme-outlier-truncation-percentile {self.extreme_outlier_truncation_percentile}"
         if self.extreme_sample_median_percentile:
             command += f" --number-of-eigensamples {self.number_of_eigensamples}"
         if self.maximum_chunk_size:
-            command +=  f" --maximum-chunk-size {self.maximum_chunk_size}"
-        if self.gc_correction: 
+            command += f" --maximum-chunk-size {self.maximum_chunk_size}"
+        if self.gc_correction:
             command += f" --annotated-intervals {self.annotated_intervals}"
 
         try:
             result = subprocess.run(command, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-            stderr_output = result.stderr.decode('utf-8').strip()
-            stdout_output = result.stdout.decode('utf-8').strip()
+            stderr_output = result.stderr.decode("utf-8").strip()
+            stdout_output = result.stdout.decode("utf-8").strip()
 
             if result.returncode != 0:
-                logging.error(f"CreateReadCountPanelOfNormals - An error occurred while creating the panel of normals: {stderr_output}")
+                logging.error(
+                    f"CreateReadCountPanelOfNormals - An error occurred while creating the panel of normals: {stderr_output}"
+                )
             else:
-                logging.info(f"CreateReadCountPanelOfNormals - Panel of normals have been created successfully: {stdout_output}")
-                   
+                logging.info(
+                    f"CreateReadCountPanelOfNormals - Panel of normals have been created successfully: {stdout_output}"
+                )
+
         except Exception as e:
             logging.error(f"somaticpip.py - An internal error occurred while creating the panel of normals: {e}")
 
-        
         return self.pon_path
-    
+
     def run_workflow(self):
-        
         self.preprocess_intervals()
         if self.gc_correction:
             self.annotate_intervals()
@@ -233,13 +225,12 @@ class PanelOfNormals:
         pon_file = self.create_pon()
         return pon_file
 
-class Config:
 
+class Config:
     def __init__(self, config_file):
-        with open(config_file, 'r') as f:
+        with open(config_file, "r") as f:
             config = json.load(f)
 
-        
         self.output_folder = config.get("output_folder")
         self.ref_fasta = config.get("ref_fasta")
         self.ref_dict = config.get("ref_dict")
@@ -262,9 +253,8 @@ class Config:
 
 
 if __name__ == "__main__":
-    
-    parser = argparse.ArgumentParser(description='Run panel of normals with configuration.')
-    parser.add_argument('config_file', type=str, help='Path to the JSON configuration file.')
+    parser = argparse.ArgumentParser(description="Run panel of normals with configuration.")
+    parser.add_argument("config_file", type=str, help="Path to the JSON configuration file.")
 
     args = parser.parse_args()
 
@@ -289,7 +279,7 @@ if __name__ == "__main__":
         config.maximum_zeros_in_interval_percentage,
         config.extreme_sample_median_percentile,
         config.extreme_outlier_truncation_percentile,
-        config.maximum_chunk_size
+        config.maximum_chunk_size,
     )
 
     pon.run_workflow()
