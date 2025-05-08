@@ -7,6 +7,8 @@ import subprocess
 
 import pandas as pd
 
+from bipackage.util.utilities import timer
+
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 
@@ -384,7 +386,85 @@ class Downsampler:
             logging.error(f"SamToFastq - An error occurred while downsampling bam: {e}")
 
 
-if __name__ == "__main__":
+@timer
+def downsample(
+    sample_id:str,
+    r1:str,
+    r2:str,
+    out_path:str,
+    reference:str,
+    *,
+    threads:int=40,
+    remove_all_dups:bool=False,
+    remove_seq_dups:bool=False,
+    use_gatk_md:bool=False,
+    strategy:str="HighAccuracy",
+    keep:float=0.5,
+)->None:
+    """
+    Pipeline to map, deduplicate, and downsample sequencing reads.
+
+    Parameters
+    ----------
+    sample_id : str
+        Sample ID.
+    r1 : str
+        Path to R1 fastq file.
+    r2 : str
+        Path to R2 fastq file.
+    out_path : str
+        Output path for the results.
+    reference : str
+        Path to the reference genome.
+    threads : int
+        Number of threads to use , default is 40.
+    remove_all_dups : bool
+        Whether to remove all duplicates, default is False.
+    remove_seq_dups : bool
+        Whether to remove sequencing duplicates, default is False.
+    use_gatk_md : bool
+        Whether to use Use GATK MarkDuplicatesSpark, default is False.
+    strategy : str
+        Downsampling strategy, default is 'High Accuracy'
+    keep : float
+        Ratio of the reads to keep [0-1], default is 0.5.
+    """
+    mapit = Mapper(
+        reference_fasta=reference,
+        sample_id=sample_id,
+        r1=r1,
+        r2=r2,
+        output_path=out_path,
+        threads=threads,
+    )
+    sam_file = mapit.map()
+
+    dedup = BAMConverter(
+        sam_path=sam_file,
+        sample_id=sample_id,
+        threads=threads,
+        use_mark_duplicates=use_gatk_md,
+        remove_all_duplicates=remove_all_dups,
+        remove_sequencing_duplicates=remove_seq_dups,
+    )
+    bam_file = dedup.convert_markdedup()
+
+    downsampler = Downsampler(
+        alignment_file=bam_file,
+        sample_id=sample_id,
+        strategy=strategy,
+        refseq=reference,
+        keep=keep,
+
+    )
+
+    downsampled_bam = downsampler.ds()
+    final_bam = downsampler.remove_unpaired_reads(downsampled_bam)
+    downsampler.bamtofastq(final_bam)
+    return
+
+
+""" def _old_downsample():
     parser = argparse.ArgumentParser(description="Pipeline to map, deduplicate, and downsample sequencing reads.")
     parser.add_argument("--sample_id", type=str, required=True, help="Sample ID")
     parser.add_argument("--r1", required=True, help="Path to R1 fastq file")
@@ -451,3 +531,7 @@ if __name__ == "__main__":
     downsampled_bam = downsampler.ds()
     final_bam = downsampler.remove_unpaired_reads(downsampled_bam)
     downsampler.bamtofastq(final_bam)
+    return """
+
+if __name__ == "__main__":
+    pass
