@@ -5,6 +5,9 @@ import subprocess
 
 import pandas as pd
 
+from bipackage.constants import PARSED_GTF_PATH_GRCh38, WHOLE_GENE_LOCS_PATH_GRCh38
+from bipackage.util.utilities import timer
+
 
 class BedFileGenerator:
     def __init__(
@@ -107,8 +110,63 @@ class BedFileGenerator:
         except Exception as e:
             logging.error(f"An unexpected error occurred: {e}")
 
+@timer
+def bedfilegenerator(
+    *,
+    gene_list: str | list[str],
+    bed_file_name: str,
+    output_folder: str,
+    whole_gene_list: str | list[str] | None,
+    parsed_gtf_path: str = PARSED_GTF_PATH_GRCh38,
+    whole_gene_locs_path: str = WHOLE_GENE_LOCS_PATH_GRCh38,
+    cds: bool = False,
+):
+    """
+    The main command for the CLI entry point. Generate and sort BED files from a parsed GTF file.
 
-def main():
+    Parameters
+    ----------
+    gene_list: str | list[str]
+        List of gene names to include.
+    bed_file_name: str
+        Name of the output BED file.
+    output_folder: str
+        Folder to save the output BED file.
+    whole_gene_list: str | list[str]
+        List of whole gene names to include.
+    parsed_gtf_path : str, default PARSED_GTF_PATH_GRCh38
+        Path to Parsed GTF file.
+    whole_gene_locs_path : str, default WHOLE_GENE_LOCS_PATH_GRCh38
+        Path to whole gene locs file.
+    cds: bool = False,
+        If True, use CDS features; otherwise use exon features.
+    """
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
+    # guard clauses
+    if isinstance(gene_list,str):
+        gene_list = list[str]
+    if isinstance(whole_gene_list,str):
+        whole_gene_list = list[whole_gene_list]
+
+    # create the instance
+    bed_generator = BedFileGenerator(
+        parsed_gtf_path=parsed_gtf_path,
+        whole_gene_locs_path=whole_gene_locs_path,
+        gene_list=gene_list,
+        bed_file_name=bed_file_name,
+        output_folder=output_folder,
+        whole_gene_list=whole_gene_list,
+        cds=cds,
+    )
+    # perform the operations
+    bed_generator.bed_creator()
+    bed_generator.sort_bed()
+
+    return
+
+
+""" def main():
     parser = argparse.ArgumentParser(description="Generate and sort BED files from a parsed GTF file.")
     parser.add_argument("--gene_list", nargs="+", required=True, help="List of gene names to include.")
     parser.add_argument("--WG", nargs="+", required=False, help="List of whole gene names to include.")
@@ -135,8 +193,8 @@ def main():
     )
 
     bed_generator.bed_creator()
-    bed_generator.sort_bed()
+    bed_generator.sort_bed() """
 
 
 if __name__ == "__main__":
-    main()
+    pass

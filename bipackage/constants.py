@@ -1,0 +1,2 @@
+PARSED_GTF_PATH_GRCh38 = "/home/genwork2/Mert/ensemblgtf/Homo_sapiens.GRCh38.112.gtf_parsed.txt"
+WHOLE_GENE_LOCS_PATH_GRCh38 = "/home/genwork2/Mert/ensemblgtf/Homo_sapiens.GRCh38.112.gtf.gene_names.sorted.cleaned.bed"
