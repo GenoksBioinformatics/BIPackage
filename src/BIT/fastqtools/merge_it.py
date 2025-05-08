@@ -5,7 +5,7 @@ from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 import subprocess
 
-
+'''Script merges fastq files'''
 
 class FastqMerger:
     def __init__(self, input_folder_paths, output_folder, names):

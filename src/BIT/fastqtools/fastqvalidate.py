@@ -1,5 +1,7 @@
 import os
 
+'''Script validates fastq files'''
+
 def check_files(directory):
 
     for filename in os.listdir(directory):

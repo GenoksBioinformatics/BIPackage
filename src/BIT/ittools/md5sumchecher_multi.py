@@ -3,6 +3,8 @@ import subprocess
 import argparse
 import multiprocessing
 
+'''Checks md5sums of files and validates if they match'''
+
 class MD5SumChecker:
 
     def __init__(self, input_directory, file_extension, num_processes):

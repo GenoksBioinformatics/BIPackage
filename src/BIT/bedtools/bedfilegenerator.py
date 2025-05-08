@@ -4,6 +4,8 @@ import subprocess
 import logging
 import argparse
 
+'''Script can create bed file for single genes or gene panels'''
+
 class BedFileGenerator:
   
     def __init__(self, parsed_gtf_path, whole_gene_locs_path, gene_list, bed_file_name, output_folder, whole_gene_list=None, cds=True):

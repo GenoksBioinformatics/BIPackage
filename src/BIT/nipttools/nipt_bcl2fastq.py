@@ -3,6 +3,8 @@ import argparse
 import subprocess
 import ftplib
 
+'''Gets a bcl file, demultiplex it and send relevant fastqs to a remote server'''
+
 class NIPTBcl2Fastq:
 
     def __init__(self, output_folder,

@@ -3,6 +3,8 @@ import subprocess
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor
 
+'''Script counts reads from fastqs'''
+
 def count_reads_and_bases(fastq_file):
     try:
         read_count = int(subprocess.check_output(

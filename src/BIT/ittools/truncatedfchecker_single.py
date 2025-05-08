@@ -2,6 +2,8 @@ import gzip
 import zlib
 import argparse
 
+'''Checks truncated files'''
+
 def check_gzip_validity(file_path):
     try:
         with gzip.open(file_path, 'rb') as file:

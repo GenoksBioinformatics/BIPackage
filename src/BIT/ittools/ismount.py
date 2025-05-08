@@ -2,6 +2,9 @@ import os
 import time
 import json
 
+
+'''Script mounts nas storages'''
+
 def is_mounted(folder_path):
     return os.path.ismount(folder_path)
 

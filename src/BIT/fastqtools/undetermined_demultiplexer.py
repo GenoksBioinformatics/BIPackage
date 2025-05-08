@@ -7,6 +7,8 @@ from concurrent.futures import ThreadPoolExecutor
 from Bio import SeqIO
 import argparse
 
+'''Script extracts reads from undetermined fastq file for given indices'''
+
 def create_target_indices(sample_sheet_file, output_json_file):
     """
     Reads the sample sheet CSV and creates a dictionary mapping Sample_ID to a list of

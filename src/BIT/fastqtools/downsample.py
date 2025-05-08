@@ -6,6 +6,8 @@ import argparse
 import pandas as pd
 import subprocess
 
+'''Script downsamples fastqs'''
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class Indexer:
