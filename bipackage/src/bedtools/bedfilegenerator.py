@@ -1,8 +1,9 @@
-import pandas as pd
+import argparse
+import logging
 import os
 import subprocess
-import logging
-import argparse
+
+import pandas as pd
 
 
 class BedFileGenerator:

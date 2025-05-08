@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
+import argparse
 import csv
-import json
 import gzip
+import json
 import os
 from concurrent.futures import ThreadPoolExecutor
+
 from Bio import SeqIO
-import argparse
 
 
 def create_target_indices(sample_sheet_file, output_json_file):

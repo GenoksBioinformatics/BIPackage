@@ -93,3 +93,4 @@ strict = true
 
 [tool.ruff.format]
 docstring-code-format = true
+line-ending = "lf"

@@ -1,7 +1,7 @@
-import os
-import subprocess
 import argparse
 import multiprocessing
+import os
+import subprocess
 
 
 class MD5SumChecker:

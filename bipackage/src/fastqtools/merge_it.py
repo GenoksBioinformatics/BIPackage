@@ -1,9 +1,9 @@
-import os
 import gzip
 import logging
+import os
+import subprocess
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
-import subprocess
 
 
 class FastqMerger:

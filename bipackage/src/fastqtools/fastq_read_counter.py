@@ -1,7 +1,8 @@
 import os
 import subprocess
-import pandas as pd
 from concurrent.futures import ThreadPoolExecutor
+
+import pandas as pd
 
 
 def count_reads_and_bases(fastq_file):

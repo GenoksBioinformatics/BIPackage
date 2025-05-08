@@ -1,7 +1,7 @@
-import os
 import argparse
-import subprocess
 import ftplib
+import os
+import subprocess
 
 
 class NIPTBcl2Fastq:

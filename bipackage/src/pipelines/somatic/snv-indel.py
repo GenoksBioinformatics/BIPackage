@@ -1,10 +1,9 @@
-import os
-import logging
-import json
 import argparse
+import json
+import logging
+import os
 import subprocess
 from concurrent.futures import ThreadPoolExecutor
-
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 

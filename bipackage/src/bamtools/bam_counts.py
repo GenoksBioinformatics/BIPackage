@@ -1,7 +1,8 @@
 import os
-import pandas as pd
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+
+import pandas as pd
 
 
 # Keep the function outside the class

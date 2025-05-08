@@ -1,8 +1,8 @@
-import os
-import logging
-import subprocess
-import json
 import argparse
+import json
+import logging
+import os
+import subprocess
 from concurrent.futures import ThreadPoolExecutor
 from typing import List, Optional
 
@@ -23,7 +23,7 @@ class PanelOfNormals:
         blacklist_intervals: str = None,
         padding: int = None,
         do_impute_zeros: bool = None,
-        number_of_eigensamples: int = None,
+        number_of_eigensamples: int | None = None,
         feature_query_lookahead: int = None,
         minimum_interval_median_percentile: float = None,
         maximum_zeros_in_sample_percentage: float = None,

@@ -1,6 +1,6 @@
+import json
 import os
 import time
-import json
 
 
 def is_mounted(folder_path):

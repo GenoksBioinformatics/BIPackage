@@ -1,6 +1,7 @@
-import os
-import pandas as pd
 import argparse
+import os
+
+import pandas as pd
 
 
 def parse_coverage_report(file_path):

@@ -1,7 +1,7 @@
-import os
-from multiprocessing import Pool
 import argparse
 import json
+import os
+from multiprocessing import Pool
 
 
 class GCNV:

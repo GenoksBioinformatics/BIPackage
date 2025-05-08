@@ -1,6 +1,6 @@
+import argparse
 import gzip
 import zlib
-import argparse
 
 
 def check_gzip_validity(file_path):
