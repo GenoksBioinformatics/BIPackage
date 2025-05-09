@@ -140,7 +140,7 @@ def nipt_bcl2fastq(
     Parameters
     ----------
     nipt_folders : str | list[str]
-        Nipt folders
+        Nipt folders.
     nipt_part: str
         Part number.
     fastq_names: str | list[str]

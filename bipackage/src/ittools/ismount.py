@@ -3,7 +3,7 @@ import os
 import time
 
 # subcommand 1
-def is_mounted(folder_path):
+def is_mounted(folder_path:str):
     return os.path.ismount(folder_path)
 
 
