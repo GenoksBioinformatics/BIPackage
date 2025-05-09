@@ -83,8 +83,23 @@ def _test_bam_counts():
     bam_counts()
 
 @timer
-def bam_counts(input_dir:str,exome_bait:str,num_threads:int):
-    """The main command for the CLI entry point."""
+def bam_counts(input_dir:str,exome_bait:str,num_threads:int) -> None:
+    """
+    Get counts from BAM file.
+
+    Parameters
+    ----------
+    input_dir : str
+        Input directory.
+    exome_bait : str
+        Exom bait.
+    num_threads : int
+        Number of threads to use.
+
+    Returns
+    -------
+    None
+    """
     counts = CountsFromBam(input_dir, exome_bait, num_threads)
     counts.process_bams()
     # Create count matrix

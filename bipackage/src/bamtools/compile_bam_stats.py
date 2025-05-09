@@ -45,7 +45,16 @@ def compile_reports_to_csv(root_dir: str, output_csv: str):
 
 @timer
 def compile_bam_stats(root_directory: str, output_csv: str) -> None:
-    """The main command for the CLI entry point."""
+    """
+    Complies BAM stats to CSV.
+
+    Parameters
+    ----------
+    root_directory : str
+        Root directory for the operations.
+    output_csv : str
+        Output csv file
+    """
     compile_reports_to_csv(root_dir=root_directory, output_csv=output_csv)
 
 
