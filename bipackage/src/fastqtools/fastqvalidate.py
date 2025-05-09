@@ -1,7 +1,9 @@
 import os
 
+from bipackage.util.utilities import timer
 
-def check_files(directory):
+
+def check_files(directory: str):
     for filename in os.listdir(directory):
         if filename.endswith("fastq.gz") or filename.endswith("fq.gz"):
             if os.path.isfile(os.path.join(directory, filename)):
@@ -14,5 +16,29 @@ def check_files(directory):
             pass
 
 
-directory_path = "/home/genwork2/Mert/fastqfix/DS2/2773"
-check_files(directory_path)
+def _test_fastq_validate():
+    directory_path = "/home/genwork2/Mert/fastqfix/DS2/2773"
+    check_files(directory_path)
+    return
+
+
+@timer
+def fastqvalidate(directory: str) -> None:
+    """
+    Validate fastq files in a given directory using`fastQValidator`.
+
+    Parameters
+    ----------
+    directory
+        Directory to perform the validation of fasq files.
+
+    Returns
+    -------
+    None
+    """
+    check_files(directory=directory)
+    return
+
+
+if __name__ == "__main__":
+    _test_fastq_validate()
