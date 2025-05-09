@@ -83,7 +83,7 @@ def _test_bam_counts():
     bam_counts()
 
 @timer
-def bam_counts(input_dir:str,exome_bait:str,num_threads:int) -> None:
+def bam_counts(input_dir:str,exome_bait:str,num_threads:int=40) -> None:
     """
     Get counts from BAM file.
 
@@ -94,7 +94,7 @@ def bam_counts(input_dir:str,exome_bait:str,num_threads:int) -> None:
     exome_bait : str
         Exom bait.
     num_threads : int
-        Number of threads to use.
+        Number of threads to use, default is 40.
 
     Returns
     -------
