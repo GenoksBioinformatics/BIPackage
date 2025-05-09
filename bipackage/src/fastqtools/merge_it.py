@@ -6,6 +6,8 @@ from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 
 
+from bipackage.util.utilities import timer
+
 class FastqMerger:
     def __init__(self, input_folder_paths, output_folder, names):
         self.input_folder_paths = input_folder_paths
@@ -66,6 +68,8 @@ class FastqMerger:
         else:
             logging.info(f"Merge - Command completed successfully: {stdout_output}")
 
+        return
+
     def execute_merge(self, commands):
         with ThreadPoolExecutor() as executor:
             futures = [executor.submit(self.run_merge_command, command) for command in commands]
@@ -75,8 +79,10 @@ class FastqMerger:
                 except Exception as e:
                     logging.error(f"Error occurred during merging: {e}")
 
+        return
 
-if __name__ == "__main__":
+# ON THE SERVER
+def _test_merge_it():
     folder_paths = [
         "/mnt/gen102/01.fastq_files/213.TWIST-ExoV2-DNAPrepWithExomePlus-NovaSeq-RUN203_fastq_files/RUN203-ILLM-DNAprep-RNA/PRJ25-1/",
         "/mnt/gen102/01.fastq_files/217.TWIST-ExoV2-DNAPrepWithExomePlus-NovaSeq-RUN207_fastq_files/RUN207-ILLM-RiboZero-PolyA-DNAprep-Poollar-WGS/PRJ25-1/",
@@ -100,3 +106,30 @@ if __name__ == "__main__":
     merger = FastqMerger(folder_paths, output_path, sample_names)
     merge_commands = merger.prepare_merge_commands()
     merger.execute_merge(merge_commands)
+    return
+
+@timer
+def merge_it(*,folder_paths:list[str], sample_names:list[str], output_path:str) -> None:
+    """
+    Merge fastq files.
+
+    Parameters
+    ----------
+    folder_paths : list[str]
+        List of paths to folders.
+    sample_names: list[str]
+        List of name of the files.
+    output_path : str
+        Path to the output directory.
+
+    Returns
+    -------
+    None
+    """
+    merger = FastqMerger(input_folder_paths=folder_paths, names=sample_names, output_folder=output_path)
+    merge_commands = merger.prepare_merge_commands()
+    merger.execute_merge(merge_commands)
+    return
+
+if __name__ == "__main__":
+    _test_merge_it()
