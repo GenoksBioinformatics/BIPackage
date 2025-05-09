@@ -3,6 +3,8 @@ import ftplib
 import os
 import subprocess
 
+from bipackage.util.utilities import timer
+
 
 class NIPTBcl2Fastq:
     def __init__(
@@ -117,6 +119,56 @@ class NIPTBcl2Fastq:
         except ftplib.all_errors as e:
             print(f"FTP error: {e}")
 
+        return
+
+
+@timer
+def nipt_bcl2fastq(
+    *,
+    nipt_folders: str | list[str],
+    nipt_part: str,
+    fastq_names: str | list[str],
+    output_folder: str,
+    num_readers: int = 10,
+    num_writers: int = 10,
+    num_processors: int = 40,
+    compression_level: int = 8,
+) -> None:
+    """
+    Run bcl2fastq conversion for multiple BCL folders, upload resulting fastqs to the server.
+
+    Parameters
+    ----------
+    nipt_folders : str | list[str]
+        Nipt folders
+    nipt_part: str
+        Part number.
+    fastq_names: str | list[str]
+        Fastq sample names - For example 24B3043312
+    output_folder: str
+        Path to the output Fastq folder.
+    num_readers: int = 10
+        Number of readers.
+    num_writers: int = 10
+        Number of writers.
+    num_processors: int = 40
+        Number of processors.
+    compression_level: int = 8
+        Compression level.
+
+    """
+    nipt = NIPTBcl2Fastq(
+        output_folder,
+        num_readers,
+        num_writers,
+        num_processors,
+        compression_level,
+        fastq_names,
+        nipt_part,
+        nipt_folders,
+    )
+    return nipt
+
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -146,8 +198,7 @@ def parse_args():
 
     return parser.parse_args()
 
-
-if __name__ == "__main__":
+def _test_main():
     args = parse_args()
     nipt = NIPTBcl2Fastq(
         args.output_folder,
@@ -159,3 +210,8 @@ if __name__ == "__main__":
         args.nipt_part,
         args.nipt_folders,
     )
+
+
+if __name__ == "__main__":
+    _test_main()
+
