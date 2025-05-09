@@ -3,6 +3,8 @@ import multiprocessing
 import os
 import subprocess
 
+from bipackage.util.utilities import timer
+
 
 class MD5SumChecker:
     def __init__(self, input_directory, file_extension, num_processes):
@@ -44,6 +46,8 @@ class MD5SumChecker:
         else:
             print(f"For {f_path} {md5sum_path}, md5sums are different")
 
+        return
+
     def checker(self):
         pool = multiprocessing.Pool(processes=self.num_processes)
         for root, dirs, files in os.walk(self.input_directory):
@@ -52,6 +56,32 @@ class MD5SumChecker:
                     pool.apply_async(self.check_file, args=(root, filename))
         pool.close()
         pool.join()
+
+        return
+
+# subcommand
+@timer
+def md5sumchecker(input_directory: str, file_extension, num_processes: int = 2) -> None:
+    """
+    MD5Sum Checker.
+
+    Parameters
+    ----------
+    input_directory : str
+        Input directory path.
+    file_extension : str
+        File extension to search for.
+    num_processes : int
+        Number of processes to use, default is 2
+
+    Returns
+    -------
+    MD5SumChecker
+    """
+    md5_checker = MD5SumChecker(
+        input_directory=input_directory, file_extension=file_extension, num_processes=num_processes
+    )
+    return md5_checker
 
 
 def main():
@@ -69,6 +99,8 @@ def main():
 
     md5_checker = MD5SumChecker(args.input_directory, args.file_extension, args.num_processes)
 
+    
+
 
 if __name__ == "__main__":
-    main()
+    pass

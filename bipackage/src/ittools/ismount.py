@@ -2,12 +2,14 @@ import json
 import os
 import time
 
-
+# subcommand 1
 def is_mounted(folder_path):
     return os.path.ismount(folder_path)
 
 
-def mount_server(username, server_address, mount_folder, password, version=None):
+# subcommand 2
+def mount_server(username:str, server_address:str, mount_folder:str, password:str, version=None):
+    """Mount nas server."""
     if version:
         mount_command = f"sudo mount -t cifs //{server_address} {mount_folder} -o username={username},password={password},vers={version}"
     else:
@@ -16,9 +18,11 @@ def mount_server(username, server_address, mount_folder, password, version=None)
         )
 
     os.system(mount_command)
+    return
 
-
-def check_reconnect(base_mnt, config_file):
+# subcommand 3
+def check_reconnect(base_mnt:str, config_file:str):
+    """Check reconnects."""
     with open(config_file, "r") as file:
         config_file = json.load(file)
 
@@ -43,8 +47,14 @@ def check_reconnect(base_mnt, config_file):
         else:
             print(f"Folder {folder_path} is already mounted")
 
+    return
 
-config_file = ""
-base = ""
+def _test_main():
+    config_file = ""
+    base = ""
+    check_reconnect(base, config_file)
+    return
 
-check_reconnect(base, config_file)
+if __name__ == "__main__":
+    _test_main()
+
