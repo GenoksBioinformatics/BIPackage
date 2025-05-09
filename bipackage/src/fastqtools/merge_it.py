@@ -5,8 +5,8 @@ import subprocess
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 
-
 from bipackage.util.utilities import timer
+
 
 class FastqMerger:
     def __init__(self, input_folder_paths, output_folder, names):
