@@ -8,6 +8,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 from Bio import SeqIO
 
+from bipackage.util.utilities import timer
+
 
 def create_target_indices(sample_sheet_file, output_json_file):
     """
@@ -74,6 +76,61 @@ def process_sample(sample_id, target_indices, input_r1, input_r2, output_dir):
     print(f"Completed sample {sample_id}")
 
 
+@timer
+def undetermined_demultiplexer(
+    sample_sheet: str, input_r1: str, input_r2: str, *, output_dir: str, json_output: str, threads: int = 4
+) -> None:
+    """
+    Filter undetermined FASTQ files for multiple samples using index information.
+
+    Parameters
+    ----------
+    sample_sheet : str
+        Path to the sample sheet CSV file.
+    input_r1 : str
+        Path to the undetermined R1 FASTQ.gz file.
+    input_r2 : str
+        Path to the undetermined R2 FASTQ.gz file.
+    output_dir : str
+        Directory to store the filtered FASTQ files.
+    json_output : str
+        Path to output JSON file for sample target indices.
+    threads : int
+        Number of threads to use, default is 4.
+
+    Returns
+    -------
+    None
+    """
+    # Ensure the output directory exists.
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Create the sample->target indices JSON mapping.
+    sample_to_indices = create_target_indices(sample_sheet, json_output)
+    print(f"Created target indices JSON file: {json_output}")
+
+    # Process each sample in parallel.
+    with ThreadPoolExecutor(max_workers=threads) as executor:
+        futures = []
+        for sample_id, target_indices in sample_to_indices.items():
+            futures.append(
+                executor.submit(
+                    process_sample,
+                    sample_id,
+                    target_indices,
+                    input_r1,
+                    input_r2,
+                    output_dir,
+                )
+            )
+        for future in futures:
+            future.result()
+    print("Filtering completed for all samples.")
+
+    return
+
+
+"""
 def main():
     parser = argparse.ArgumentParser(
         description="Filter undetermined FASTQ files for multiple samples using index information."
@@ -118,7 +175,7 @@ def main():
         for future in futures:
             future.result()
     print("Filtering completed for all samples.")
-
+"""
 
 if __name__ == "__main__":
-    main()
+    pass

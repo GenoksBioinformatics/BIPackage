@@ -8,7 +8,8 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "pandas (>=2.2.3,<3.0.0)"
+    "pandas (>=2.2.3,<3.0.0)",
+    "biopython (>=1.85,<2.0)"
 ]
 
 [tool.poetry.scripts]
@@ -74,6 +75,7 @@ ignore = [
   # Lints below are turned off because of conflicts with the ruff formatter
   "D206",
   "W191",
+  "PTH"
 ]
 
 [tool.ruff.lint.pycodestyle]
