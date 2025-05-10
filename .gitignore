@@ -1,0 +1,8 @@
+*__pycache__
+*.pyc
+token
+dist/*
+*whl
+*tar.gz
+*.csv
+*.ipynb
