@@ -20,24 +20,6 @@ from bipackage.src import (
 )
 from bipackage.util._colors import blue, bold
 
-__all__ = [
-    "bam_counts",
-    "bedfilegenerator",
-    "check_gzip_validity",
-    "check_reconnect",
-    "compile_bam_stats",
-    "downsample",
-    "fastq_read_counter",
-    "fastqvalidate",
-    "is_mounted",
-    "md5sumchecker",
-    "merge_it",
-    "mount_server",
-    "nipt_bcl2fastq",
-    "undetermined_demultiplexer",
-
-]
-
 
 def main():
     parser = argparse.ArgumentParser(description="BIpackage CLI")
@@ -63,9 +45,7 @@ def main():
 
     # ------------------------------------- compile_bam_stats -------------------------------------
     compile_bam_stats_subparser = subparsers.add_parser("compile_bam_stats", help="Complies BAM stats to CSV.")
-    compile_bam_stats_subparser.add_argument(
-        "--dir", "-d", required=True, help="Root directory for the operations."
-    )
+    compile_bam_stats_subparser.add_argument("--dir", "-d", required=True, help="Root directory for the operations.")
     compile_bam_stats_subparser.add_argument("--output-csv", "-o", required=True, help="Output csv file.")
 
     # ======================================== BEDTOOLS ========================================
@@ -185,15 +165,23 @@ def main():
     )
 
     # -------------------------------- truncatedfchecker_single --------------------------------
-    check_gzip_validity_subparser = subparsers.add_parser("check_gzip_validity", help="Check a compressed file validity.")
+    check_gzip_validity_subparser = subparsers.add_parser(
+        "check_gzip_validity", help="Check a compressed file validity."
+    )
     check_gzip_validity_subparser.add_argument("file_path", help="Path to the compressed file.")
 
     # ======================================== NIPTTOOLS ========================================
-    nipt_bcl2fastq_subparser = subparsers.add_parser("nipt_bcl2fastq", help="Run bcl2fastq conversion for multiple BCL folders.")
+    nipt_bcl2fastq_subparser = subparsers.add_parser(
+        "nipt_bcl2fastq", help="Run bcl2fastq conversion for multiple BCL folders."
+    )
     nipt_bcl2fastq_subparser.add_argument("--folders", "-f", nargs="+", required=True, help="NIPT folders.")
     nipt_bcl2fastq_subparser.add_argument("--part", "-p", required=True, type=int, help="NIPT Part number.")
-    nipt_bcl2fastq_subparser.add_argument("--names", "-n", nargs="+", required=True, help="Fastq sample names - For example 24B3043312.")
-    nipt_bcl2fastq_subparser.add_argument("--output-folder", "-o", required=True, help="Path to the output Fastq folder.")
+    nipt_bcl2fastq_subparser.add_argument(
+        "--names", "-n", nargs="+", required=True, help="Fastq sample names - For example 24B3043312."
+    )
+    nipt_bcl2fastq_subparser.add_argument(
+        "--output-folder", "-o", required=True, help="Path to the output Fastq folder."
+    )
     nipt_bcl2fastq_subparser.add_argument("--num-readers", "-r", type=int, default=10, help="Number of readers.")
     nipt_bcl2fastq_subparser.add_argument("--num-writers", "-w", type=int, default=10, help="Number of writers.")
     nipt_bcl2fastq_subparser.add_argument("--num-processors", "-p", type=int, default=40, help="Number of processors.")
@@ -205,6 +193,7 @@ def main():
     # EVALUATE ARGS ------------------------------
     # Subcommand: list
     if args.command is None:
+        print(f"BIpackage {blue(importlib.metadata.version('bipackage'))}")
         parser.print_help()  # Show help if no command is provided
         return
 
@@ -228,19 +217,95 @@ def main():
             cds=args.cds,
         )
 
+    # Subcommand: downsample
+    elif args.command == "downsample":
+        downsample(
+            sample_id=args.sample_id,
+            r1=args.r1,
+            r2=args.r2,
+            out_path=args.out_path,
+            reference=args.reference,
+            threads=args.threads,
+            remove_all_dups=args.remove_all_dups,
+            remove_seq_dups=args.remove_seq_dups,
+            use_gatk_md=args.use_gatk_md,
+            strategy=args.strategy,
+            keep=args.keep,
+        )
+
+    # Subcommand: fastq_read_counter
+    elif args.command == "fastq_read_counter":
+        fastq_read_counter(directory=args.directory, output_path=args.output_path)
+
+    # Subcommand: fastqvalidate
+    elif args.command == "fastqvalidate":
+        fastqvalidate(directory=args.dir)
+
+    # Subcommand: merge_it
+    elif args.command == "merge_it":
+        merge_it(folder_paths=args.folder_paths, sample_names=args.sample_names, output_path=args.output_path)
+
+    # Subcommand: undetermined_demultiplexer
+    elif args.command == "undetermined_demultiplexer":
+        undetermined_demultiplexer(
+            sample_sheet=args.sample_sheet,
+            input_r1=args.input_r1,
+            input_r2=args.input_r2,
+            output_dir=args.output_dir,
+            json_output=args.json_output,
+            threads=args.threads,
+        )
+
+    # Subcommand: ismounted
+    elif args.command == "ismounted":
+        is_mounted(folder_path=args.path)
+
+    # Subcommand: mount_server
+    elif args.command == "mount_server":
+        mount_server(
+            username=args.username,
+            server_address=args.server_address,
+            mount_folder=args.mount_folder,
+            password=args.password,
+            version=args.version,
+        )
+
+    # Subcommand: check_reconnect
+    elif args.command == "check_reconnect":
+        check_reconnect(base_mnt=args.base_mnt, config_file=args.config_file)
+
+    # Subcommand: md5sumchecker
+    elif args.command == "md5sumchecker":
+        md5sumchecker(input_directory=args.directory, file_extension=args.extension, num_processes=args.num_processes)
+
+    # Subcommand: check_gzip_validity
+    elif args.command == "check_gzip_validity":
+        check_gzip_validity(file_path=args.file_path)
+
+    # Subcommand: nipt_bcl2fastq
+    elif args.command == "nipt_bcl2fastq":
+        nipt_bcl2fastq(
+            nipt_folders=args.folders,
+            nipt_part=args.part,
+            fastq_names=args.names,
+            output_folder=args.output_folder,
+            num_readers=args.num_readers,
+            num_writers=args.num_writers,
+            num_processors=args.num_processors,
+            compression_level=args.compression_level,
+        )
 
     # TODO: Pass bam_counts_subparser argsto _bam_counts function ✅
-    # TODO: Pass compile_bam_stats_subparser args to _compile_bam_stats function
-    # TODO: Pass bedfilegenerator_subparser args to _bedfilegenerator function
-    # TODO: Pass downsample_subparser args to _downsample function
-    # TODO: Pass fastq_read_counter_subparser args to _fastq_read_counter function
-    # TODO: Pass fastqvalidate_subparser args to _fastqvalidate function
-    # TODO: Pass merge_it_subparser args to _merge_it function
-    # TODO: Pass undetermined_demultiplexer_subparser args to _undetermined_demultiplexer function
-    # TODO: Pass ismounted_subparser args to _ismounted function
-    # TODO: Pass mount_server_subparser args to _mount_server function
-    # TODO: Pass check_reconnect_subparser args to _check_reconnect function
-    # TODO: Pass md5sumchecker_subparser args to _md5sumchecker function
-    # TODO: Pass check_gzip_validity_subparser args to _check_gzip_validity function
-    # TODO: Pass nipt_bcl2fastq_subparser args to _nipt_bcl2fastq function
-
+    # TODO: Pass compile_bam_stats_subparser args to _compile_bam_stats function ✅
+    # TODO: Pass bedfilegenerator_subparser args to _bedfilegenerator function ✅
+    # TODO: Pass downsample_subparser args to _downsample function ✅
+    # TODO: Pass fastq_read_counter_subparser args to _fastq_read_counter function ✅
+    # TODO: Pass fastqvalidate_subparser args to _fastqvalidate function ✅
+    # TODO: Pass merge_it_subparser args to _merge_it function ✅
+    # TODO: Pass undetermined_demultiplexer_subparser args to _undetermined_demultiplexer function✅
+    # TODO: Pass ismounted_subparser args to _ismounted function ✅
+    # TODO: Pass mount_server_subparser args to _mount_server function ✅
+    # TODO: Pass check_reconnect_subparser args to _check_reconnect function ✅
+    # TODO: Pass md5sumchecker_subparser args to _md5sumchecker function ✅
+    # TODO: Pass check_gzip_validity_subparser args to _check_gzip_validity function ✅
+    # TODO: Pass nipt_bcl2fastq_subparser args to _nipt_bcl2fastq function ✅
