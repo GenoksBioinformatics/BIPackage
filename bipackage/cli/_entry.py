@@ -235,7 +235,7 @@ def main():
     nipt_bcl2fastq_subparser.add_argument("--compression-level", "-cl", type=int, default=8, help="Compression level.")
 
     # PARSE ALL ARGS ------------------------------
-    # argcomplete.autocomplete(parser)
+    argcomplete.autocomplete(parser, always_complete_options=True)
     args = parser.parse_args()
 
     # EVALUATE ARGS ------------------------------
