@@ -184,7 +184,7 @@ def main():
     )
     nipt_bcl2fastq_subparser.add_argument("--num-readers", "-r", type=int, default=10, help="Number of readers.")
     nipt_bcl2fastq_subparser.add_argument("--num-writers", "-w", type=int, default=10, help="Number of writers.")
-    nipt_bcl2fastq_subparser.add_argument("--num-processors", "-p", type=int, default=40, help="Number of processors.")
+    nipt_bcl2fastq_subparser.add_argument("--num-processors", "-np", type=int, default=40, help="Number of processors.")
     nipt_bcl2fastq_subparser.add_argument("--compression-level", "-cl", type=int, default=8, help="Compression level.")
 
     # PARSE ALL ARGS ------------------------------
