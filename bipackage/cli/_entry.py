@@ -1,6 +1,7 @@
 import argparse
 import importlib.metadata
 
+import argcomplete
 from rich_argparse import RichHelpFormatter
 
 from bipackage.constants import PARSED_GTF_PATH_GRCh38, WHOLE_GENE_LOCS_PATH_GRCh38
@@ -234,6 +235,7 @@ def main():
     nipt_bcl2fastq_subparser.add_argument("--compression-level", "-cl", type=int, default=8, help="Compression level.")
 
     # PARSE ALL ARGS ------------------------------
+    # argcomplete.autocomplete(parser)
     args = parser.parse_args()
 
     # EVALUATE ARGS ------------------------------
