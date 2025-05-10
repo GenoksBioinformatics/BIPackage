@@ -1,6 +1,8 @@
 import argparse
 import importlib.metadata
 
+from rich_argparse import RichHelpFormatter
+
 from bipackage.constants import PARSED_GTF_PATH_GRCh38, WHOLE_GENE_LOCS_PATH_GRCh38
 from bipackage.src import (
     bam_counts,
@@ -20,15 +22,24 @@ from bipackage.src import (
 )
 from bipackage.util._colors import blue, bold
 
+RichHelpFormatter.styles["argparse.args"] = "bold dark_cyan"
+RichHelpFormatter.styles["argparse.groups"] = "bold dark_orange"
+RichHelpFormatter.styles["argparse.help"] = "bold grey82"
+RichHelpFormatter.styles["argparse.metavar"] = "grey35"
+RichHelpFormatter.styles["argparse.syntax"] = "bold bold"
+RichHelpFormatter.styles["argparse.text"] = "bold default"
+RichHelpFormatter.styles["argparse.prog"] = "bold grey50"
+RichHelpFormatter.styles["argparse.default"] = "italic"
+
 
 def main():
-    parser = argparse.ArgumentParser(description="BIpackage CLI")
+    parser = argparse.ArgumentParser(description="BIpackage CLI", formatter_class=RichHelpFormatter)
     # --version
     parser.add_argument(
         "--version",
         "-v",
         action="version",
-        version=f"BIpackage {blue(importlib.metadata.version('bipackage'))}",
+        version=bold(f"BIpackage {blue(importlib.metadata.version('bipackage'))}"),
         help="Show version",
     )
 
@@ -38,13 +49,17 @@ def main():
     # ======================================== BAMTOOLS ========================================
 
     # ---------------------------------------- bam_counts ----------------------------------------
-    bam_counts_subparser = subparsers.add_parser("bam_counts", help="Get counts from BAM file.")
+    bam_counts_subparser = subparsers.add_parser(
+        "bam_counts", help="Get counts from BAM file.", formatter_class=RichHelpFormatter
+    )
     bam_counts_subparser.add_argument("--dir", "-d", required=True, help="Input directory.")
     bam_counts_subparser.add_argument("--exome-bait", "-e", required=True, help="Exome bait.")
     bam_counts_subparser.add_argument("--num-threads", "-n", type=int, default=40, help="Number of threads to use.")
 
     # ------------------------------------- compile_bam_stats -------------------------------------
-    compile_bam_stats_subparser = subparsers.add_parser("compile_bam_stats", help="Complies BAM stats to CSV.")
+    compile_bam_stats_subparser = subparsers.add_parser(
+        "compile_bam_stats", aliases=["cbs"], help="Complies BAM stats to CSV.", formatter_class=RichHelpFormatter
+    )
     compile_bam_stats_subparser.add_argument("--dir", "-d", required=True, help="Root directory for the operations.")
     compile_bam_stats_subparser.add_argument("--output-csv", "-o", required=True, help="Output csv file.")
 
@@ -52,7 +67,10 @@ def main():
 
     # ------------------------------------- bedfilegenerator -------------------------------------
     bedfilegenerator_subparser = subparsers.add_parser(
-        "bedfilegenerator", help="Generate and sort BED files from a parsed GTF file."
+        "bedfilegenerator",
+        aliases=["bfg"],
+        help="Generate and sort BED files from a parsed GTF file.",
+        formatter_class=RichHelpFormatter,
     )
     bedfilegenerator_subparser.add_argument(
         "--gene-list", "-g", nargs="+", required=True, help="Gene names to include."
@@ -77,7 +95,9 @@ def main():
 
     # ------------------------------------- downsample -------------------------------------
     downsample_subparser = subparsers.add_parser(
-        "downsample", help="Pipeline to map, deduplicate, and downsample sequencing reads."
+        "downsample",
+        help="Pipeline to map, deduplicate, and downsample sequencing reads.",
+        formatter_class=RichHelpFormatter,
     )
     downsample_subparser.add_argument("--sample_id", "-s", required=True, help="Sample ID.")
     downsample_subparser.add_argument("--r1", "-r1", required=True, help="Path to R1 fastq file.")
@@ -95,21 +115,31 @@ def main():
         "--keep", "-k", type=float, default=0.5, help="How much read to keep? Give a ratio"
     )
 
-    # ------------------------------------- fastq_read_counter -------------------------------------
-    fastq_read_counter_subparser = subparsers.add_parser("fastq_read_counter", help="Count reads from FASTQ file.")
+    # ------------------------------------ fastq_read_counter ------------------------------------
+    fastq_read_counter_subparser = subparsers.add_parser(
+        "fastq_read_counter", aliases=["frc"], help="Count reads from FASTQ file.", formatter_class=RichHelpFormatter
+    )
     fastq_read_counter_subparser.add_argument("--directory", "-d", required=True, help="Path to directory.")
     fastq_read_counter_subparser.add_argument("--output_path", "-o", required=True, help="Path to save csv file.")
 
     # ------------------------------------- fastqvalidate -------------------------------------
     fastqvalidate_subparser = subparsers.add_parser(
-        "fastqvalidate", help="Validate fastq files in a given directory using`fastQValidator`."
+        "fastqvalidate",
+        aliases=["fqv"],
+        help="Validate fastq files in a given directory using`fastQValidator`.",
+        formatter_class=RichHelpFormatter,
     )
     fastqvalidate_subparser.add_argument(
-        "--dir", "-d", required=True, help="Directory to perform the validation of fasq files."
+        "--dir",
+        "-d",
+        required=True,
+        help="Directory to perform the validation of fasq files.",
     )
 
     # ------------------------------------- merge_it -------------------------------------
-    merge_it_subparser = subparsers.add_parser("merge_it", help="Merge FASTQ files.")
+    merge_it_subparser = subparsers.add_parser(
+        "merge_it", aliases=["mff"], help="Merge FASTQ files.", formatter_class=RichHelpFormatter
+    )
     merge_it_subparser.add_argument("--folder-paths", "-f", nargs="+", required=True, help="List of paths to folders.")
     merge_it_subparser.add_argument("--sample-names", "-s", nargs="+", required=True, help="List of name of the files.")
     merge_it_subparser.add_argument("--output-path", "-o", required=True, help="Path to the output directory.")
@@ -117,7 +147,9 @@ def main():
     # -------------------------------- undetermined_demultiplexer --------------------------------
     undetermined_demultiplexer_subparser = subparsers.add_parser(
         "undetermined_demultiplexer",
+        aliases=["ud"],
         help="Filter undetermined FASTQ files for multiple samples using index information.",
+        formatter_class=RichHelpFormatter,
     )
     undetermined_demultiplexer_subparser.add_argument(
         "--sample_sheet", "-s", required=True, help="Path to the sample sheet CSV file."
@@ -142,22 +174,30 @@ def main():
 
     # ------------------------------------- ismount -------------------------------------
     # subcommand 1
-    ismounted_subparser = subparsers.add_parser("ismount", help="Check if a given path is a mounted server.")
+    ismounted_subparser = subparsers.add_parser(
+        "is_mounted", help="Check if a given path is a mounted server.", formatter_class=RichHelpFormatter
+    )
     ismounted_subparser.add_argument("--path", "-p", required=True, help="Path to check.")
     # subcommand 2
-    mount_server_subparser = subparsers.add_parser("mount_server", help="Mount a server.")
+    mount_server_subparser = subparsers.add_parser(
+        "mount_server", help="Mount a server.", formatter_class=RichHelpFormatter
+    )
     mount_server_subparser.add_argument("--username", "-u", required=True, help="Username.")
     mount_server_subparser.add_argument("--server_address", "-s", required=True, help="Server address.")
     mount_server_subparser.add_argument("--mount-folder", "-m", required=True, help="Mount folder.")
     mount_server_subparser.add_argument("--password", "-p", required=True, help="Password.")
     mount_server_subparser.add_argument("--version", "-v", default=None, help="Version.")
     # subcommand 3
-    check_reconnect_subparser = subparsers.add_parser("check_reconnect", help="Check reconnects.")
+    check_reconnect_subparser = subparsers.add_parser(
+        "check_reconnect", help="Check reconnects.", formatter_class=RichHelpFormatter
+    )
     check_reconnect_subparser.add_argument("--base-mnt", "-b", required=True, help="Base mount.")
     check_reconnect_subparser.add_argument("--config-file", "-c", required=True, help="Config file.")
 
     # ------------------------------------- md5sumchecker -------------------------------------
-    md5sumchecker_subparser = subparsers.add_parser("md5sumchecker", help="Check md5sum of a file.")
+    md5sumchecker_subparser = subparsers.add_parser(
+        "md5sumchecker", aliases=["md5sc"], help="Check md5sum of a file.", formatter_class=RichHelpFormatter
+    )
     md5sumchecker_subparser.add_argument("--directory", "-d", required=True, help="Input directory path.")
     md5sumchecker_subparser.add_argument("--extension", "-e", required=True, help="File extension to search for.")
     md5sumchecker_subparser.add_argument(
@@ -166,13 +206,19 @@ def main():
 
     # -------------------------------- truncatedfchecker_single --------------------------------
     check_gzip_validity_subparser = subparsers.add_parser(
-        "check_gzip_validity", help="Check a compressed file validity."
+        "check_gzip_validity",
+        aliases=["cgv"],
+        help="Check a compressed file validity.",
+        formatter_class=RichHelpFormatter,
     )
     check_gzip_validity_subparser.add_argument("file_path", help="Path to the compressed file.")
 
     # ======================================== NIPTTOOLS ========================================
     nipt_bcl2fastq_subparser = subparsers.add_parser(
-        "nipt_bcl2fastq", help="Run bcl2fastq conversion for multiple BCL folders."
+        "nipt_bcl2fastq",
+        aliases=["nb2f"],
+        help="Run bcl2fastq conversion for multiple BCL folders.",
+        formatter_class=RichHelpFormatter,
     )
     nipt_bcl2fastq_subparser.add_argument("--folders", "-f", nargs="+", required=True, help="NIPT folders.")
     nipt_bcl2fastq_subparser.add_argument("--part", "-p", required=True, type=int, help="NIPT Part number.")
@@ -193,7 +239,7 @@ def main():
     # EVALUATE ARGS ------------------------------
     # Subcommand: list
     if args.command is None:
-        print(f"BIpackage {blue(importlib.metadata.version('bipackage'))}")
+        print(bold(f"BIpackage {blue(importlib.metadata.version('bipackage'))}"))
         parser.print_help()  # Show help if no command is provided
         return
 
@@ -257,7 +303,7 @@ def main():
         )
 
     # Subcommand: ismounted
-    elif args.command == "ismounted":
+    elif args.command == "is_mounted":
         is_mounted(folder_path=args.path)
 
     # Subcommand: mount_server
