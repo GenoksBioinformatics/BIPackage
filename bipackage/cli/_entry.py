@@ -199,18 +199,48 @@ def main():
     nipt_bcl2fastq_subparser.add_argument("--num-processors", "-p", type=int, default=40, help="Number of processors.")
     nipt_bcl2fastq_subparser.add_argument("--compression-level", "-cl", type=int, default=8, help="Compression level.")
 
-# TODO: Pass bam_counts_subparser argsto _bam_counts function
-# TODO: Pass compile_bam_stats_subparser args to _compile_bam_stats function
-# TODO: Pass bedfilegenerator_subparser args to _bedfilegenerator function
-# TODO: Pass downsample_subparser args to _downsample function
-# TODO: Pass fastq_read_counter_subparser args to _fastq_read_counter function
-# TODO: Pass fastqvalidate_subparser args to _fastqvalidate function
-# TODO: Pass merge_it_subparser args to _merge_it function
-# TODO: Pass undetermined_demultiplexer_subparser args to _undetermined_demultiplexer function
-# TODO: Pass ismounted_subparser args to _ismounted function
-# TODO: Pass mount_server_subparser args to _mount_server function
-# TODO: Pass check_reconnect_subparser args to _check_reconnect function
-# TODO: Pass md5sumchecker_subparser args to _md5sumchecker function
-# TODO: Pass check_gzip_validity_subparser args to _check_gzip_validity function
-# TODO: Pass nipt_bcl2fastq_subparser args to _nipt_bcl2fastq function
+    # PARSE ALL ARGS ------------------------------
+    args = parser.parse_args()
+
+    # EVALUATE ARGS ------------------------------
+    # Subcommand: list
+    if args.command is None:
+        parser.print_help()  # Show help if no command is provided
+        return
+
+    # Subcommand: bam_counts
+    elif args.command == "bam_counts":
+        bam_counts(input_dir=args.dir, exome_bait=args.exome_bait, num_threads=args.num_threads)
+
+    # Subcommand: compile_bam_stats
+    elif args.command == "compile_bam_stats":
+        compile_bam_stats(root_directory=args.dir, output_csv=args.output_csv)
+
+    # Subcommand: bedfilegenerator
+    elif args.command == "bedfilegenerator":
+        bedfilegenerator(
+            gene_list=args.gene_list,
+            bed_file_name=args.bed_file_name,
+            output_folder=args.output_folder,
+            whole_gene_list=args.whole_gene_list,
+            parsed_gtf_path=args.parsed_gtf_path,
+            whole_gene_locs_path=args.whole_gene_locs_path,
+            cds=args.cds,
+        )
+
+
+    # TODO: Pass bam_counts_subparser argsto _bam_counts function ✅
+    # TODO: Pass compile_bam_stats_subparser args to _compile_bam_stats function
+    # TODO: Pass bedfilegenerator_subparser args to _bedfilegenerator function
+    # TODO: Pass downsample_subparser args to _downsample function
+    # TODO: Pass fastq_read_counter_subparser args to _fastq_read_counter function
+    # TODO: Pass fastqvalidate_subparser args to _fastqvalidate function
+    # TODO: Pass merge_it_subparser args to _merge_it function
+    # TODO: Pass undetermined_demultiplexer_subparser args to _undetermined_demultiplexer function
+    # TODO: Pass ismounted_subparser args to _ismounted function
+    # TODO: Pass mount_server_subparser args to _mount_server function
+    # TODO: Pass check_reconnect_subparser args to _check_reconnect function
+    # TODO: Pass md5sumchecker_subparser args to _md5sumchecker function
+    # TODO: Pass check_gzip_validity_subparser args to _check_gzip_validity function
+    # TODO: Pass nipt_bcl2fastq_subparser args to _nipt_bcl2fastq function
 
