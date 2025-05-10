@@ -2,7 +2,41 @@ import argparse
 import importlib.metadata
 
 from bipackage.constants import PARSED_GTF_PATH_GRCh38, WHOLE_GENE_LOCS_PATH_GRCh38
+from bipackage.src import (
+    bam_counts,
+    bedfilegenerator,
+    check_gzip_validity,
+    check_reconnect,
+    compile_bam_stats,
+    downsample,
+    fastq_read_counter,
+    fastqvalidate,
+    is_mounted,
+    md5sumchecker,
+    merge_it,
+    mount_server,
+    nipt_bcl2fastq,
+    undetermined_demultiplexer,
+)
 from bipackage.util._colors import blue, bold
+
+__all__ = [
+    "bam_counts",
+    "bedfilegenerator",
+    "check_gzip_validity",
+    "check_reconnect",
+    "compile_bam_stats",
+    "downsample",
+    "fastq_read_counter",
+    "fastqvalidate",
+    "is_mounted",
+    "md5sumchecker",
+    "merge_it",
+    "mount_server",
+    "nipt_bcl2fastq",
+    "undetermined_demultiplexer",
+
+]
 
 
 def main():
@@ -179,3 +213,4 @@ def main():
 # TODO: Pass md5sumchecker_subparser args to _md5sumchecker function
 # TODO: Pass check_gzip_validity_subparser args to _check_gzip_validity function
 # TODO: Pass nipt_bcl2fastq_subparser args to _nipt_bcl2fastq function
+
