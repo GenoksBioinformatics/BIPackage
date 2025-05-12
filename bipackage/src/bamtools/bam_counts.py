@@ -73,17 +73,8 @@ class CountsFromBam:
         count_mat.to_csv(os.path.join(self.input_dir, "Counts_matrix.txt"), sep="\t", index=False)
 
 
-
-
-def _test_bam_counts():
-    # Set parameters
-    input_dir = "/home/genwork2/Mert/bwa_dedup/braf-kras-nras"
-    exome_bait = "/home/genwork2/Mert/02.BEDS/variousbeds/sorted_braf-kras-nras.bed"
-    num_threads = 40
-    bam_counts()
-
 @timer
-def bam_counts(input_dir:str,exome_bait:str,num_threads:int=40) -> None:
+def bam_counts(input_dir: str, exome_bait: str, num_threads: int = 40) -> None:
     """
     Get counts from BAM file.
 
@@ -106,5 +97,6 @@ def bam_counts(input_dir:str,exome_bait:str,num_threads:int=40) -> None:
     counts.create_count_matrix()
     return
 
+
 if __name__ == "__main__":
-    _test_bam_counts()
+    pass
