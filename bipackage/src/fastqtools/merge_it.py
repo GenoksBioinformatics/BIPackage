@@ -82,7 +82,7 @@ class FastqMerger:
         return
 
 # ON THE SERVER
-def _test_merge_it():
+def _test_merge_it(): # TODO: MOVE
     folder_paths = [
         "/mnt/gen102/01.fastq_files/213.TWIST-ExoV2-DNAPrepWithExomePlus-NovaSeq-RUN203_fastq_files/RUN203-ILLM-DNAprep-RNA/PRJ25-1/",
         "/mnt/gen102/01.fastq_files/217.TWIST-ExoV2-DNAPrepWithExomePlus-NovaSeq-RUN207_fastq_files/RUN207-ILLM-RiboZero-PolyA-DNAprep-Poollar-WGS/PRJ25-1/",

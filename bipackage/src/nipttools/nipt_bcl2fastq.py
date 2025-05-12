@@ -38,8 +38,8 @@ class NIPTBcl2Fastq:
         print("Copying bcl files to server")
 
         if self.bclfolders:
-            source_paths = " ".join([f"/mnt/nextseq/{folder}" for folder in self.bclfolders])
-            command = f"cp -r {source_paths} /home/genwork2/06.BCLs"
+            source_paths = " ".join([f"/mnt/nextseq/{folder}" for folder in self.bclfolders]) # TODO: MOVE
+            command = f"cp -r {source_paths} /home/genwork2/06.BCLs" # TODO: MOVE
 
             subprocess.run(command, shell=True)
         else:
@@ -59,7 +59,7 @@ class NIPTBcl2Fastq:
         self.fastq_folder_paths = []
 
         for bcl_folder in self.bclfolders:
-            bcl_abs_path = os.path.join("/home/genwork2/06.BCLs", bcl_folder)
+            bcl_abs_path = os.path.join("/home/genwork2/06.BCLs", bcl_folder) # TODO: MOVE
             fastq_abs_path = os.path.join(self.output_folder, bcl_folder)
             samplesheet_path = os.path.join(bcl_abs_path, "SampleSheet.csv")
 
@@ -93,9 +93,9 @@ class NIPTBcl2Fastq:
 
     def upload_file_secure(
         self,
-        ftp_server="transfer.ctit.eurofinseu.com",
-        ftp_user="tr_genoks",
-        ftp_password="N:If&iZR4cxPg2",
+        ftp_server="transfer.ctit.eurofinseu.com", # TODO: MOVE
+        ftp_user="tr_genoks", # TODO: MOVE
+        ftp_password="N:If&iZR4cxPg2", # TODO: MOVE
     ):
         print("Started uploading the files")
 

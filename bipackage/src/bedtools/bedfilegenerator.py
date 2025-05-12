@@ -183,8 +183,8 @@ def bedfilegenerator(
     logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
     bed_generator = BedFileGenerator(
-        parsed_gtf_path="/home/genwork2/Mert/ensemblgtf/Homo_sapiens.GRCh38.112.gtf_parsed.txt",
-        whole_gene_locs_path="/home/genwork2/Mert/ensemblgtf/Homo_sapiens.GRCh38.112.gtf.gene_names.sorted.cleaned.bed",
+        parsed_gtf_path="/home/genwork2/Mert/ensemblgtf/Homo_sapiens.GRCh38.112.gtf_parsed.txt", # TODO: MOVE
+        whole_gene_locs_path="/home/genwork2/Mert/ensemblgtf/Homo_sapiens.GRCh38.112.gtf.gene_names.sorted.cleaned.bed", # TODO: MOVE
         gene_list=args.gene_list,
         whole_gene_list=args.WG,
         bed_file_name=args.bed_file_name,

@@ -17,7 +17,7 @@ def check_files(directory: str):
 
 
 def _test_fastq_validate():
-    directory_path = "/home/genwork2/Mert/fastqfix/DS2/2773"
+    directory_path = "/home/genwork2/Mert/fastqfix/DS2/2773" # TODO: MOVE
     check_files(directory_path)
     return
 
