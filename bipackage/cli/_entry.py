@@ -4,6 +4,7 @@ import importlib.metadata
 import argcomplete
 from rich_argparse import RichHelpFormatter
 
+from bipackage.autocomplete import _tab_autocomplete
 from bipackage.constants import PARSED_GTF_PATH_GRCh38, WHOLE_GENE_LOCS_PATH_GRCh38
 from bipackage.src import (
     bam_counts,
@@ -22,6 +23,8 @@ from bipackage.src import (
     undetermined_demultiplexer,
 )
 from bipackage.util._colors import blue, bold
+
+_tab_autocomplete()
 
 RichHelpFormatter.styles["argparse.args"] = "bold dark_cyan"
 RichHelpFormatter.styles["argparse.groups"] = "bold dark_orange"

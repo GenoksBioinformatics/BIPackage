@@ -21,11 +21,12 @@ Note that `params` are the parameters for the __subcommand__.
 To enable tab autocompletion, run the following command:
 
 bashrc
+run bip once and restart the shell
 ```shell
-eval "$(_BIP_COMPLETE=source bip)"
+bip
 ```
 
-zshrc
+add to zshrc
 ```shell
 autoload -U bashcompinit
 bashcompinit
