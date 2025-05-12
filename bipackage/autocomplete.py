@@ -11,7 +11,6 @@ elif sys.platform.startswith("darwin"):
     ops = "MacOS"
 else:
    ops = "Unknown OS"
-print(ops)
 # PATHS
 home = Path().home().expanduser()
 zsh = home / ".zshenv"
