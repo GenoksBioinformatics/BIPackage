@@ -30,7 +30,7 @@ def fastqvalidate(directory: str) -> None:
     Parameters
     ----------
     directory
-        Directory to perform the validation of fasq files.
+        Directory to perform the validation of fastq files.
 
     Returns
     -------

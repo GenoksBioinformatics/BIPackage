@@ -22,39 +22,6 @@ def count_reads_and_bases(fastq_file):
         return fastq_file, 0, 0
 
 
-def _test_fastq_read_counter(
-    directory="/home/genwork2/03.Fastq_Output/R208genklimerged", # TODO: MOVE
-    output_path="/home/genwork2/03.Fastq_Output/R208genklimerged/R208genklimerged-stats.csv", # TODO: MOVE
-):
-    files_to_process = [
-        os.path.join(directory, filename)
-        for filename in os.listdir(directory)
-        if filename.endswith(".fastq.gz") and not filename.startswith("Undetermined")
-    ]
-
-    results = []
-    with ThreadPoolExecutor() as executor:
-        futures = {executor.submit(count_reads_and_bases, file): file for file in files_to_process}
-
-        for future in futures:
-            filename, read_count, base_count = future.result()
-            results.append(
-                {
-                    "file": os.path.basename(filename),
-                    "reads": read_count,
-                    "bases": base_count,
-                }
-            )
-
-    df = pd.DataFrame(results)
-
-    # print(df)
-
-    df.to_csv(
-        output_path,
-        index=False,
-    )
-
 @timer
 def fastq_read_counter(directory: str, output_path: str) -> None:
     """
@@ -98,4 +65,4 @@ def fastq_read_counter(directory: str, output_path: str) -> None:
 
 
 if __name__ == "__main__":
-    _test_fastq_read_counter()
+    pass

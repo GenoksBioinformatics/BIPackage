@@ -81,32 +81,6 @@ class FastqMerger:
 
         return
 
-# ON THE SERVER
-def _test_merge_it(): # TODO: MOVE
-    folder_paths = [
-        "/mnt/gen102/01.fastq_files/213.TWIST-ExoV2-DNAPrepWithExomePlus-NovaSeq-RUN203_fastq_files/RUN203-ILLM-DNAprep-RNA/PRJ25-1/",
-        "/mnt/gen102/01.fastq_files/217.TWIST-ExoV2-DNAPrepWithExomePlus-NovaSeq-RUN207_fastq_files/RUN207-ILLM-RiboZero-PolyA-DNAprep-Poollar-WGS/PRJ25-1/",
-        "/mnt/gen102/01.fastq_files/219.TWIST-ExoV2-DNAPrepWithExomePlus-NovaSeq-RUN209_fastq_files/R209-Filtered/",
-        "/mnt/gen102/01.fastq_files/223.TWIST-RUN213-DNBSEQT7_fastq_files/PRJ25-1/",
-    ]
-
-    sample_names = [
-        "KRNA10",
-        "KRNA11",
-        "KRNA12",
-        "KRNA13",
-        "KRNA14",
-        "KRNA15",
-        "KRNA31",
-        "KRNA22",
-    ]
-
-    output_path = "/home/genwork2/03.Fastq_Output/PRJ25-1-merged"
-
-    merger = FastqMerger(folder_paths, output_path, sample_names)
-    merge_commands = merger.prepare_merge_commands()
-    merger.execute_merge(merge_commands)
-    return
 
 @timer
 def merge_it(*,folder_paths:list[str], sample_names:list[str], output_path:str) -> None:
@@ -132,4 +106,4 @@ def merge_it(*,folder_paths:list[str], sample_names:list[str], output_path:str) 
     return
 
 if __name__ == "__main__":
-    _test_merge_it()
+    pass
