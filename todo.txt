@@ -13,3 +13,14 @@ bedtools
 fastqtools
 ittools
 nipttools
+
+
+ROADMAP FOR PIPELINES
+
+remove hardcoded paths
+open a new entry point named bipipe
+allow bipipe to accept config file (json) or similar
+    - accept config as config 
+    - yet allow args as well
+        e.g bipipe xyz --config my_config_xyz.json --output-folder /path/to/output
+    - allow args to override config
