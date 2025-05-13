@@ -16,12 +16,6 @@ def check_files(directory: str):
             pass
 
 
-def _test_fastq_validate():
-    directory_path = "/home/genwork2/Mert/fastqfix/DS2/2773" # TODO: MOVE
-    check_files(directory_path)
-    return
-
-
 @timer
 def fastqvalidate(directory: str) -> None:
     """
@@ -41,4 +35,4 @@ def fastqvalidate(directory: str) -> None:
 
 
 if __name__ == "__main__":
-    _test_fastq_validate()
+    pass

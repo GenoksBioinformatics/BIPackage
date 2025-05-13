@@ -95,6 +95,7 @@ def main():
     bedfilegenerator_subparser.add_argument(
         "--cds", "-c", action="store_true", help="If used, use CDS features; otherwise use exon features."
     )
+    bedfilegenerator_subparser.add_argument("--ref-folder", "-rf", help="Path to the folder for reference files.")
     # ======================================== FASTQTOOLS ========================================
 
     # ------------------------------------- downsample -------------------------------------
@@ -237,6 +238,9 @@ def main():
     nipt_bcl2fastq_subparser.add_argument("--num-processors", "-np", type=int, default=40, help="Number of processors.")
     nipt_bcl2fastq_subparser.add_argument("--compression-level", "-cl", type=int, default=8, help="Compression level.")
 
+    nipt_bcl2fastq_subparser.add_argument("--bcl-path", "-b", required=True, help="Path to the BCL folder.")
+    nipt_bcl2fastq_subparser.add_argument("--source-path", "-s", required=True, help="Path to the source folder.")
+
     # PARSE ALL ARGS ------------------------------
     argcomplete.autocomplete(parser, always_complete_options=True)
     args = parser.parse_args()
@@ -266,6 +270,7 @@ def main():
             parsed_gtf_path=args.parsed_gtf_path,
             whole_gene_locs_path=args.whole_gene_locs_path,
             cds=args.cds,
+            ref_folder=args.ref_folder,
         )
 
     # Subcommand: downsample
@@ -344,6 +349,8 @@ def main():
             num_writers=args.num_writers,
             num_processors=args.num_processors,
             compression_level=args.compression_level,
+            source_path=args.source_path,
+            bcl_path=args.bcl_path,
         )
 
     # TODO: Pass bam_counts_subparser argsto _bam_counts function ✅

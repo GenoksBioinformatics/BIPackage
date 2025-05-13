@@ -117,8 +117,9 @@ def bedfilegenerator(
     bed_file_name: str,
     output_folder: str,
     whole_gene_list: str | list[str] | None,
-    parsed_gtf_path: str = PARSED_GTF_PATH_GRCh38,
-    whole_gene_locs_path: str = WHOLE_GENE_LOCS_PATH_GRCh38,
+    ref_folder: str | None = None,
+    parsed_gtf_path: str | None = None,
+    whole_gene_locs_path: str | None = None,
     cds: bool = False,
 ):
     """
@@ -134,14 +135,23 @@ def bedfilegenerator(
         Folder to save the output BED file.
     whole_gene_list: str | list[str]
         List of whole gene names to include.
-    parsed_gtf_path : str, default PARSED_GTF_PATH_GRCh38
-        Path to Parsed GTF file.
-    whole_gene_locs_path : str, default WHOLE_GENE_LOCS_PATH_GRCh38
-        Path to whole gene locs file.
+    ref_folder : str | None
+        Path to the folder for reference files. e.g "fasta" or "gtf".
+        Will be concatenated with the default paths.
+    parsed_gtf_path : str
+        Path to Parsed GTF file. e.g "Homo_sapiens.GRCh38.112.parsed.gtf"
+    whole_gene_locs_path : str
+        Path to whole gene locs file. e.g "Homo_sapiens.GRCh38.112.gtf.gene_names.sorted.cleaned.bed"
     cds: bool = False,
         If True, use CDS features; otherwise use exon features.
     """
     logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
+    if ref_folder is not None:
+        if parsed_gtf_path is None:
+            parsed_gtf_path = os.path.join(ref_folder, PARSED_GTF_PATH_GRCh38)
+        if whole_gene_locs_path in None:
+            whole_gene_locs_path = os.path.join(ref_folder, WHOLE_GENE_LOCS_PATH_GRCh38)
 
     # guard clauses
     if isinstance(gene_list,str):
