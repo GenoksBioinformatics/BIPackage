@@ -6,14 +6,6 @@ import subprocess
 from bipackage.util.utilities import timer
 
 
-source_path = "/mnt/nextseq"
-bcl_path = "/home/genwork2/06.BCLs"
-
-FTP_SERVER = "transfer.ctit.eurofinseu.com"
-FTP_USER = "tr_genoks"
-FTP_PASSWORD = "N:If&iZR4cxPg2"
-
-
 class NIPTBcl2Fastq:
     def __init__(
         self,
@@ -27,9 +19,6 @@ class NIPTBcl2Fastq:
         nipt_folders,
         source_path,
         bcl_path,
-        ftp_server,
-        ftp_user,
-        ftp_password,
     ):
         self.output_folder = output_folder
         self.num_readers = num_readers
@@ -41,9 +30,6 @@ class NIPTBcl2Fastq:
         self.bclfolders = nipt_folders
         self.source_path = source_path
         self.bcl_path = bcl_path
-        self.ftp_server = ftp_server
-        self.ftp_user = ftp_user
-        self.ftp_password = ftp_password
         self.fastq_folder_paths = []
         self.fastq_file_paths = []
         self.copybclfromnas()
@@ -77,7 +63,7 @@ class NIPTBcl2Fastq:
         self.fastq_folder_paths = []
 
         for bcl_folder in self.bclfolders:
-            bcl_abs_path = os.path.join(bcl_path, bcl_folder)
+            bcl_abs_path = os.path.join(self.bcl_path, bcl_folder)
             fastq_abs_path = os.path.join(self.output_folder, bcl_folder)
             samplesheet_path = os.path.join(bcl_abs_path, "SampleSheet.csv")
 
@@ -109,11 +95,8 @@ class NIPTBcl2Fastq:
 
         print("Took sample paths")
 
-    def upload_file_secure(self):
+    def upload_file_secure(self, ftp_server, ftp_user, ftp_password):
         print("Started uploading the files")
-        ftp_server = self.ftp_server
-        ftp_user = self.ftp_user
-        ftp_password = self.ftp_password
         try:
             ftps = ftplib.FTP_TLS()
             ftps.connect(ftp_server, 21)
@@ -144,16 +127,12 @@ def nipt_bcl2fastq(
     nipt_part: str,
     fastq_names: str | list[str],
     output_folder: str,
+    source_path: str,
+    bcl_path: str,
     num_readers: int = 10,
     num_writers: int = 10,
     num_processors: int = 40,
     compression_level: int = 8,
-    source_path: str = source_path,
-    bcl_path: str = bcl_path,
-    ftp_server: str = FTP_SERVER,
-    ftp_user: str = FTP_USER,
-    ftp_password: str = FTP_PASSWORD,
-
 ) -> None:
     """
     Run bcl2fastq conversion for multiple BCL folders, upload resulting fastqs to the server.
@@ -180,12 +159,6 @@ def nipt_bcl2fastq(
         Path to the source folder.
     bcl_path: str = bcl_path
         Path to the bcl folder.
-    ftp_server: str = FTP_SERVER
-        FTP server.
-    ftp_user: str = FTP_USER
-        FTP user.
-    ftp_password: str = FTP_PASSWORD
-        FTP password.
 
     """
     nipt = NIPTBcl2Fastq(
@@ -199,12 +172,8 @@ def nipt_bcl2fastq(
         nipt_folders,
         source_path=source_path,
         bcl_path=bcl_path,
-        ftp_server=ftp_server,
-        ftp_user=ftp_user,
-        ftp_password=ftp_password,
     )
     return nipt
-
 
 
 if __name__ == "__main__":
