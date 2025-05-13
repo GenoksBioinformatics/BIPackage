@@ -166,35 +166,5 @@ def bedfilegenerator(
     return
 
 
-""" def main():
-    parser = argparse.ArgumentParser(description="Generate and sort BED files from a parsed GTF file.")
-    parser.add_argument("--gene_list", nargs="+", required=True, help="List of gene names to include.")
-    parser.add_argument("--WG", nargs="+", required=False, help="List of whole gene names to include.")
-    parser.add_argument("--bed_file_name", required=True, help="Name of the output BED file.")
-    parser.add_argument("--output_folder", required=True, help="Folder to save the output BED file.")
-    parser.add_argument(
-        "--cds",
-        action="store_true",
-        help="If set, use CDS features; otherwise use exon features.",
-    )
-
-    args = parser.parse_args()
-
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-
-    bed_generator = BedFileGenerator(
-        parsed_gtf_path="/home/genwork2/Mert/ensemblgtf/Homo_sapiens.GRCh38.112.gtf_parsed.txt", # TODO: MOVE
-        whole_gene_locs_path="/home/genwork2/Mert/ensemblgtf/Homo_sapiens.GRCh38.112.gtf.gene_names.sorted.cleaned.bed", # TODO: MOVE
-        gene_list=args.gene_list,
-        whole_gene_list=args.WG,
-        bed_file_name=args.bed_file_name,
-        output_folder=args.output_folder,
-        cds=args.cds,
-    )
-
-    bed_generator.bed_creator()
-    bed_generator.sort_bed() """
-
-
 if __name__ == "__main__":
     pass

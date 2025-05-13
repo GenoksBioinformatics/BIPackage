@@ -58,17 +58,6 @@ def compile_bam_stats(root_directory: str, output_csv: str) -> None:
     compile_reports_to_csv(root_dir=root_directory, output_csv=output_csv)
 
 
-""" def main():
-    parser = argparse.ArgumentParser(description="Compile coverage report files into a CSV.")
-    parser.add_argument(
-        "root_directory",
-        type=str,
-        help="Root directory to scan for .coverage.report files",
-    )
-    parser.add_argument("output_csv", type=str, help="Path to output CSV file")
-    args = parser.parse_args()
-    compile_reports_to_csv(args.root_directory, args.output_csv) """
-
 
 if __name__ == "__main__":
     pass
