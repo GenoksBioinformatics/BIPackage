@@ -6,6 +6,14 @@ import subprocess
 from bipackage.util.utilities import timer
 
 
+source_path = "/mnt/nextseq"
+bcl_path = "/home/genwork2/06.BCLs"
+
+FTP_SERVER = "transfer.ctit.eurofinseu.com"
+FTP_USER = "tr_genoks"
+FTP_PASSWORD = "N:If&iZR4cxPg2"
+
+
 class NIPTBcl2Fastq:
     def __init__(
         self,
@@ -17,6 +25,11 @@ class NIPTBcl2Fastq:
         fastq_file_names,
         nipt_part,
         nipt_folders,
+        source_path,
+        bcl_path,
+        ftp_server,
+        ftp_user,
+        ftp_password,
     ):
         self.output_folder = output_folder
         self.num_readers = num_readers
@@ -26,6 +39,11 @@ class NIPTBcl2Fastq:
         self.nipt_part = nipt_part
         self.fastq_file_names = fastq_file_names
         self.bclfolders = nipt_folders
+        self.source_path = source_path
+        self.bcl_path = bcl_path
+        self.ftp_server = ftp_server
+        self.ftp_user = ftp_user
+        self.ftp_password = ftp_password
         self.fastq_folder_paths = []
         self.fastq_file_paths = []
         self.copybclfromnas()
@@ -38,8 +56,8 @@ class NIPTBcl2Fastq:
         print("Copying bcl files to server")
 
         if self.bclfolders:
-            source_paths = " ".join([f"/mnt/nextseq/{folder}" for folder in self.bclfolders]) # TODO: MOVE
-            command = f"cp -r {source_paths} /home/genwork2/06.BCLs" # TODO: MOVE
+            source_paths = " ".join([f"{self.source_path}/{folder}" for folder in self.bclfolders])
+            command = f"cp -r {source_paths} {self.bcl_path}"
 
             subprocess.run(command, shell=True)
         else:
@@ -59,7 +77,7 @@ class NIPTBcl2Fastq:
         self.fastq_folder_paths = []
 
         for bcl_folder in self.bclfolders:
-            bcl_abs_path = os.path.join("/home/genwork2/06.BCLs", bcl_folder) # TODO: MOVE
+            bcl_abs_path = os.path.join(bcl_path, bcl_folder)
             fastq_abs_path = os.path.join(self.output_folder, bcl_folder)
             samplesheet_path = os.path.join(bcl_abs_path, "SampleSheet.csv")
 
@@ -91,14 +109,11 @@ class NIPTBcl2Fastq:
 
         print("Took sample paths")
 
-    def upload_file_secure(
-        self,
-        ftp_server="transfer.ctit.eurofinseu.com", # TODO: MOVE
-        ftp_user="tr_genoks", # TODO: MOVE
-        ftp_password="N:If&iZR4cxPg2", # TODO: MOVE
-    ):
+    def upload_file_secure(self):
         print("Started uploading the files")
-
+        ftp_server = self.ftp_server
+        ftp_user = self.ftp_user
+        ftp_password = self.ftp_password
         try:
             ftps = ftplib.FTP_TLS()
             ftps.connect(ftp_server, 21)
@@ -133,6 +148,12 @@ def nipt_bcl2fastq(
     num_writers: int = 10,
     num_processors: int = 40,
     compression_level: int = 8,
+    source_path: str = source_path,
+    bcl_path: str = bcl_path,
+    ftp_server: str = FTP_SERVER,
+    ftp_user: str = FTP_USER,
+    ftp_password: str = FTP_PASSWORD,
+
 ) -> None:
     """
     Run bcl2fastq conversion for multiple BCL folders, upload resulting fastqs to the server.
@@ -155,6 +176,16 @@ def nipt_bcl2fastq(
         Number of processors.
     compression_level: int = 8
         Compression level.
+    source_path: str = source_path
+        Path to the source folder.
+    bcl_path: str = bcl_path
+        Path to the bcl folder.
+    ftp_server: str = FTP_SERVER
+        FTP server.
+    ftp_user: str = FTP_USER
+        FTP user.
+    ftp_password: str = FTP_PASSWORD
+        FTP password.
 
     """
     nipt = NIPTBcl2Fastq(
@@ -166,52 +197,15 @@ def nipt_bcl2fastq(
         fastq_names,
         nipt_part,
         nipt_folders,
+        source_path=source_path,
+        bcl_path=bcl_path,
+        ftp_server=ftp_server,
+        ftp_user=ftp_user,
+        ftp_password=ftp_password,
     )
     return nipt
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(
-        description="Run bcl2fastq conversion for multiple BCL folders, upload resulting fastqs to the server."
-    )
-    parser.add_argument("-o", "--output-folder", required=True, help="Path to the output Fastq folder")
-    parser.add_argument("-r", "--num-readers", type=int, default=10, help="Number of readers")
-    parser.add_argument("-w", "--num-writers", type=int, default=10, help="Number of writers")
-    parser.add_argument("-p", "--num-processors", type=int, default=40, help="Number of processors")
-    parser.add_argument("-cl", "--compression-level", type=int, default=8, help="Compression level")
-    parser.add_argument(
-        "-names",
-        "--fastq-names",
-        nargs="+",
-        help="Fastq sample names - For example 24B3043312",
-        required=True,
-    )
-    parser.add_argument("-part", "--nipt-part", type=int, help="Part Number", required=True)
-    parser.add_argument(
-        "-nipt_folders",
-        "--nipt-folders",
-        nargs="+",
-        type=str,
-        help="Nipt folders",
-        required=True,
-    )
-
-    return parser.parse_args()
-
-def _test_main():
-    args = parse_args()
-    nipt = NIPTBcl2Fastq(
-        args.output_folder,
-        args.num_readers,
-        args.num_writers,
-        args.num_processors,
-        args.compression_level,
-        args.fastq_names,
-        args.nipt_part,
-        args.nipt_folders,
-    )
-
 
 if __name__ == "__main__":
-    _test_main()
-
+    pass
