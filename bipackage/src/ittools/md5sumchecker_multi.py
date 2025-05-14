@@ -59,6 +59,7 @@ class MD5SumChecker:
 
         return
 
+
 # subcommand
 @timer
 def md5sumchecker(input_directory: str, file_extension, num_processes: int = 2) -> None:
@@ -98,8 +99,6 @@ def main():
     args = parser.parse_args()
 
     md5_checker = MD5SumChecker(args.input_directory, args.file_extension, args.num_processes)
-
-    
 
 
 if __name__ == "__main__":

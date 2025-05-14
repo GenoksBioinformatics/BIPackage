@@ -388,19 +388,19 @@ class Downsampler:
 
 @timer
 def downsample(
-    sample_id:str,
-    r1:str,
-    r2:str,
-    out_path:str,
-    reference:str,
+    sample_id: str,
+    r1: str,
+    r2: str,
+    out_path: str,
+    reference: str,
     *,
-    threads:int=40,
-    remove_all_dups:bool=False,
-    remove_seq_dups:bool=False,
-    use_gatk_md:bool=False,
-    strategy:str="HighAccuracy",
-    keep:float=0.5,
-)->None:
+    threads: int = 40,
+    remove_all_dups: bool = False,
+    remove_seq_dups: bool = False,
+    use_gatk_md: bool = False,
+    strategy: str = "HighAccuracy",
+    keep: float = 0.5,
+) -> None:
     """
     Pipeline to map, deduplicate, and downsample sequencing reads.
 
@@ -455,7 +455,6 @@ def downsample(
         strategy=strategy,
         refseq=reference,
         keep=keep,
-
     )
 
     downsampled_bam = downsampler.ds()

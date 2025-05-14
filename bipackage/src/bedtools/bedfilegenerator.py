@@ -110,6 +110,7 @@ class BedFileGenerator:
         except Exception as e:
             logging.error(f"An unexpected error occurred: {e}")
 
+
 @timer
 def bedfilegenerator(
     *,
@@ -154,9 +155,9 @@ def bedfilegenerator(
             whole_gene_locs_path = os.path.join(ref_folder, WHOLE_GENE_LOCS_PATH_GRCh38)
 
     # guard clauses
-    if isinstance(gene_list,str):
+    if isinstance(gene_list, str):
         gene_list = list[str]
-    if isinstance(whole_gene_list,str):
+    if isinstance(whole_gene_list, str):
         whole_gene_list = list[whole_gene_list]
 
     # create the instance

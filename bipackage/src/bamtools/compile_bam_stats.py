@@ -43,6 +43,7 @@ def compile_reports_to_csv(root_dir: str, output_csv: str):
     df.to_csv(output_csv, index=False)
     print(f"Compiled {len(report_files)} files into {output_csv}")
 
+
 @timer
 def compile_bam_stats(root_directory: str, output_csv: str) -> None:
     """
@@ -56,7 +57,6 @@ def compile_bam_stats(root_directory: str, output_csv: str) -> None:
         Output csv file
     """
     compile_reports_to_csv(root_dir=root_directory, output_csv=output_csv)
-
 
 
 if __name__ == "__main__":

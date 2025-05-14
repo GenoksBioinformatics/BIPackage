@@ -19,5 +19,4 @@ __all__ = [
     "mount_server",
     "nipt_bcl2fastq",
     "undetermined_demultiplexer",
-
 ]

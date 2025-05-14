@@ -83,7 +83,7 @@ class FastqMerger:
 
 
 @timer
-def merge_it(*,folder_paths:list[str], sample_names:list[str], output_path:str) -> None:
+def merge_it(*, folder_paths: list[str], sample_names: list[str], output_path: str) -> None:
     """
     Merge fastq files.
 
@@ -104,6 +104,7 @@ def merge_it(*,folder_paths:list[str], sample_names:list[str], output_path:str) 
     merge_commands = merger.prepare_merge_commands()
     merger.execute_merge(merge_commands)
     return
+
 
 if __name__ == "__main__":
     pass

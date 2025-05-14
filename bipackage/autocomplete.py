@@ -10,16 +10,17 @@ elif sys.platform.startswith("win"):
 elif sys.platform.startswith("darwin"):
     ops = "MacOS"
 else:
-   ops = "Unknown OS"
+    ops = "Unknown OS"
 # PATHS
 home = Path().home().expanduser()
 zsh = home / ".zshenv"
 bsh = home / ".bash_completion"
 # autocomplete text for bashrc or zshrc
-text ="\n# BIPackage Autocomplete\n"
+text = "\n# BIPackage Autocomplete\n"
 text += 'eval "$(register-python-argcomplete bip)"\n'
-bshfile = str(Path.home()/".bashrc")
-#bshfile = "deneme.sh"
+bshfile = str(Path.home() / ".bashrc")
+# bshfile = "deneme.sh"
+
 
 def _tab_autocomplete_mac():
     """Tab autocomplete for macOS."""
@@ -31,11 +32,10 @@ def _tab_autocomplete_mac():
 
 
 def _check_bashrc():
-
     with open(bshfile) as b:
         bashrc = b.read()
 
-    return (text in bashrc)
+    return text in bashrc
 
 
 def _tab_autocomplete_linux():
@@ -56,7 +56,6 @@ def _tab_autocomplete():
         _tab_autocomplete_mac()
     else:
         pass
-
 
 
 if __name__ == "__main__":

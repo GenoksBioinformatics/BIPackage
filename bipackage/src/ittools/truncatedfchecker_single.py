@@ -4,7 +4,7 @@ import zlib
 
 
 # subcommand
-def check_gzip_validity(file_path:str) -> None:
+def check_gzip_validity(file_path: str) -> None:
     """
     Check a compressed file validity, prints results to stdout.
 
@@ -29,6 +29,7 @@ def check_gzip_validity(file_path:str) -> None:
         print("Error reading file")
 
     return
+
 
 """def _test_check_gzip_validity()
     parser = argparse.ArgumentParser(description="It checks a single compressed file in a specified directory")

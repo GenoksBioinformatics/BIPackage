@@ -7,9 +7,9 @@ FTP_SERVER = "transfer.ctit.eurofinseu.com"
 FTP_USER = "tr_genoks"
 FTP_PASSWORD = "N:If&iZR4cxPg2"
 
-def _test_nipt_bcl2fastq():
 
-    obj =nipt_bcl2fastq(
+def _test_nipt_bcl2fastq():
+    obj = nipt_bcl2fastq(
         nipt_part="",
         nipt_folders="",
         fastq_names="",

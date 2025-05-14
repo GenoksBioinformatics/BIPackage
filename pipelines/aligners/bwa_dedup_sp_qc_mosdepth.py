@@ -319,6 +319,7 @@ class CoverageAnalysis:
                 exc_info=True,
             )
 
+
 # TODO: MOVE
 ref_fasta = "/home/genwork2/Mert/01.REFGEN/GRCh38/hg38.fa"
 bed_file = "/mnt/gen100/11.bed_files/27.MT_panel/Twist_MitoPanel_chrM_all_hg38_target.bed"

@@ -2,13 +2,14 @@ import json
 import os
 import time
 
+
 # subcommand 1
-def is_mounted(folder_path:str):
+def is_mounted(folder_path: str):
     return os.path.ismount(folder_path)
 
 
 # subcommand 2
-def mount_server(username:str, server_address:str, mount_folder:str, password:str, version=None):
+def mount_server(username: str, server_address: str, mount_folder: str, password: str, version=None):
     """Mount nas server."""
     if version:
         mount_command = f"sudo mount -t cifs //{server_address} {mount_folder} -o username={username},password={password},vers={version}"
@@ -20,8 +21,9 @@ def mount_server(username:str, server_address:str, mount_folder:str, password:st
     os.system(mount_command)
     return
 
+
 # subcommand 3
-def check_reconnect(base_mnt:str, config_file:str):
+def check_reconnect(base_mnt: str, config_file: str):
     """Check reconnects."""
     with open(config_file, "r") as file:
         config_file = json.load(file)
@@ -49,12 +51,13 @@ def check_reconnect(base_mnt:str, config_file:str):
 
     return
 
+
 def _test_main():
     config_file = ""
     base = ""
     check_reconnect(base, config_file)
     return
 
+
 if __name__ == "__main__":
     _test_main()
-
