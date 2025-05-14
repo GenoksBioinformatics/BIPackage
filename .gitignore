@@ -7,3 +7,4 @@ dist/*
 *.csv
 *.ipynb
 dist/
+.ruff_cache/
