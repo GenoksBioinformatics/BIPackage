@@ -11,7 +11,7 @@ dependencies = [
     "pandas (>=2.2.3,<3.0.0)",
     "biopython (>=1.85,<2.0)",
     "rich-argparse (>=1.7.0,<2.0.0)",
-    "argcomplete (>=3.6.2,<4.0.0)"
+    "argcomplete (>=3.6.2,<4.0.0)",
 ]
 
 [tool.poetry.scripts]
@@ -19,6 +19,9 @@ bip = "bipackage.cli._entry:main"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.11.8"
+mkdocstrings = {extras = ["python"], version = "^0.29.1"}
+mkdocs-material = "^9.6.14"
+mkdocs = "^1.6.1"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

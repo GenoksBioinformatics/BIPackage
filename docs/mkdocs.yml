@@ -1,0 +1,61 @@
+site_name: bipackage Docs
+theme:
+  name: material
+  features:
+    - navigation.top
+    - content.code.copy
+    - navigation.sections
+  palette:
+    scheme: default
+  extensions:
+    - toc:
+        permalink: true
+        toc_depth: 2
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: numpy
+            show_signature: true
+            show_signature_annotations: true
+            show_source: false
+            show_submodules: false
+            separate_signature: true
+            show_root_toc_entry: false
+            
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.tabbed
+  - pymdownx.snippets
+
+nav:
+  - Documentation:
+    - Installation: index.md
+    - Bamtools:
+      - bam_counts: bam_counts.md
+      - compile_bam_stats: compile_bam_stats.md
+    - Bedtools:
+      - bedfilegenerator: bedfilegenerator.md
+    - Fastqtools:
+      - downsample: downsample.md
+      - fastq_read_counter: fastq_read_counter.md
+      - fastqvalidate: fastqvalidate.md
+      - merge_it: merge_it.md
+      - undetermined_demultiplexer: undetermined_demultiplexer.md
+    - ittools:
+      - check_gzip_validity: check_gzip_validity.md
+      - check_reconnect: check_reconnect.md
+      - is_mounted: is_mounted.md
+      - md5sumchecker: md5sumchecker.md
+      - mount_server: mount_server.md
+    - NiptTools:
+      - nipt_bcl2fastq: nipt_bcl2fastq.md
