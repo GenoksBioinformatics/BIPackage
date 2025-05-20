@@ -5,6 +5,8 @@ import logging
 import os
 import subprocess
 
+'''Script downsamples fastqs'''
+
 import pandas as pd
 
 from bipackage.util.utilities import timer

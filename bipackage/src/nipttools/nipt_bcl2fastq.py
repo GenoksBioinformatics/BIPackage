@@ -6,6 +6,8 @@ import subprocess
 from bipackage.util.utilities import timer
 
 
+'''Gets a bcl file, demultiplex it and send relevant fastqs to a remote server'''
+
 class NIPTBcl2Fastq:
     def __init__(
         self,

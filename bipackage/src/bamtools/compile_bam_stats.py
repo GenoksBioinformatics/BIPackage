@@ -6,6 +6,8 @@ import pandas as pd
 from bipackage.util.utilities import timer
 
 
+'''Script can compile detailed bam statistics produced by Megabolt'''
+
 def parse_coverage_report(file_path):
     """Parse a .coverage.report file and return a dictionary of its contents."""
     data = {}

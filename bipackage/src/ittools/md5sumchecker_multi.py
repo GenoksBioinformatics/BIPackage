@@ -6,6 +6,8 @@ import subprocess
 from bipackage.util.utilities import timer
 
 
+'''Checks md5sums of files and validates if they match'''
+
 class MD5SumChecker:
     def __init__(self, input_directory, file_extension, num_processes):
         self.input_directory = input_directory
