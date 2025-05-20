@@ -1,0 +1,9 @@
+@font-face {
+  font-family: "JetBrainsMonoSemiBold";
+  src: url("assets/JetBrainsMono-SemiBold.ttf");
+}
+
+
+.pre .code {
+  font-family: "JetBrainsMonoSemiBold";
+}
