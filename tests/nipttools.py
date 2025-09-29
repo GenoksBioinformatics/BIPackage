@@ -4,8 +4,8 @@ source_path = "/mnt/nextseq"
 bcl_path = "/home/genwork2/06.BCLs"
 
 FTP_SERVER = "transfer.ctit.eurofinseu.com"
-FTP_USER = "tr_genoks"
-FTP_PASSWORD = "N:If&iZR4cxPg2"
+FTP_USER = ""
+FTP_PASSWORD = ""
 
 
 def _test_nipt_bcl2fastq():
