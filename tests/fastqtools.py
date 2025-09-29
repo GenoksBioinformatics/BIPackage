@@ -31,10 +31,10 @@ def _test_fastq_validate():
 # ON THE SERVER
 def _test_merge_it():
     folder_paths = [
-        "/mnt/gen102/01.fastq_files/213.TWIST-ExoV2-DNAPrepWithExomePlus-NovaSeq-RUN203_fastq_files/RUN203-ILLM-DNAprep-RNA/PRJ25-1/",
-        "/mnt/gen102/01.fastq_files/217.TWIST-ExoV2-DNAPrepWithExomePlus-NovaSeq-RUN207_fastq_files/RUN207-ILLM-RiboZero-PolyA-DNAprep-Poollar-WGS/PRJ25-1/",
-        "/mnt/gen102/01.fastq_files/219.TWIST-ExoV2-DNAPrepWithExomePlus-NovaSeq-RUN209_fastq_files/R209-Filtered/",
-        "/mnt/gen102/01.fastq_files/223.TWIST-RUN213-DNBSEQT7_fastq_files/PRJ25-1/",
+        "/mnt/gen100/01.fastq_files/213.TWIST-ExoV2-DNAPrepWithExomePlus-NovaSeq-RUN203_fastq_files/RUN203-ILLM-DNAprep-RNA/PRJ25-1/",
+        "/mnt/gen100/01.fastq_files/217.TWIST-ExoV2-DNAPrepWithExomePlus-NovaSeq-RUN207_fastq_files/RUN207-ILLM-RiboZero-PolyA-DNAprep-Poollar-WGS/PRJ25-1/",
+        "/mnt/gen100/01.fastq_files/219.TWIST-ExoV2-DNAPrepWithExomePlus-NovaSeq-RUN209_fastq_files/R209-Filtered/",
+        "/mnt/gen100/01.fastq_files/223.TWIST-RUN213-DNBSEQT7_fastq_files/PRJ25-1/",
     ]
 
     sample_names = [

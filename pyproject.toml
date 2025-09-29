@@ -14,11 +14,25 @@ dependencies = [
     "argcomplete (>=3.6.2,<4.0.0)"
 ]
 
+[tool.poetry]
+name = "bipackage"
+version = "0.1.0"
+description = "Bioinformatics tools and pipelines"
+authors = ["Your Name <you@example.com>"]
+
+
 [tool.poetry.scripts]
 bip = "bipackage.cli._entry:main"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.11.8"
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+pandas = ">=2.2.3,<3.0.0"
+biopython = ">=1.85,<2.0"
+rich-argparse = ">=1.7.0,<2.0.0"
+argcomplete = ">=3.6.2,<4.0.0"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
